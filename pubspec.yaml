@@ -1,0 +1,84 @@
+name: payhive
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
+  intl: ^0.20.1
+  shared_preferences: ^2.3.3
+  cached_network_image: ^3.3.1
+  dio: ^5.7.0
+  pretty_dio_logger: ^1.4.0
+  get_it: ^7.7.0
+  get: 4.6.6
+  flutter_animate: ^4.5.2
+  pinput: ^5.0.0
+  percent_indicator: ^4.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - assets/icons/
+    - assets/temp/
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato/Lato-Black.ttf
+        - asset: assets/fonts/Lato/Lato-Bold.ttf
+        - asset: assets/fonts/Lato/Lato-Light.ttf
+        - asset: assets/fonts/Lato/Lato-LightItalic.ttf
+        - asset: assets/fonts/Lato/Lato-Regular.ttf
+        - asset: assets/fonts/Lato/Lato-Thin.ttf
+        - asset: assets/fonts/Lato/Lato-ThinItalic.ttf
+          style: normal
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Black.ttf
+        - asset: assets/fonts/Inter/Inter-Bold.ttf
+        - asset: assets/fonts/Inter/Inter-ExtraBold.ttf
+        - asset: assets/fonts/Inter/Inter-Light.ttf
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+          style: normal
+
+    - family: Asap
+      fonts:
+        - asset: assets/fonts/Asap/Asap-Black.ttf
+        - asset: assets/fonts/Asap/Asap-ExtraBold.ttf
+        - asset: assets/fonts/Asap/Asap-ExtraLight.ttf
+        - asset: assets/fonts/Asap/Asap-Light.ttf
+        - asset: assets/fonts/Asap/Asap-Medium.ttf
+        - asset: assets/fonts/Asap/Asap-Regular.ttf
+        - asset: assets/fonts/Asap/Asap-SemiBold.ttf
+        - asset: assets/fonts/Asap/Asap-Thin.ttf
+        - asset: assets/fonts/Asap/Asap_Condensed-Black.ttf
+        - asset: assets/fonts/Asap/Asap_Condensed-Bold.ttf
+        - asset: assets/fonts/Asap/Asap_Condensed-ExtraBold.ttf
+        - asset: assets/fonts/Asap/Asap_Condensed-Light.ttf
+        - asset: assets/fonts/Asap/Asap_Condensed-Medium.ttf
+        - asset: assets/fonts/Asap/Asap_Expanded-Black.ttf
+        - asset: assets/fonts/Asap/Asap_Expanded-Light.ttf
+        - asset: assets/fonts/Asap/Asap_Expanded-Medium.ttf
+          style: normal
