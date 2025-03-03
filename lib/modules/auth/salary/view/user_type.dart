@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:payhive/modules/auth/salary/view/otp.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/salaried_annual_income.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -61,17 +62,20 @@ class _UserTypeState extends State<UserType> {
           child: Stack(
             children: [
               progress(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    spacing(passedHeight: height / 10),
-                    text(),
-                    spacing(passedHeight: height / 10),
-                    ...List.generate(
-                      list.length,
-                      (ind) => Padding(
-                        padding: EdgeInsets.only(
-                            left: width / 20.0, right: width / 20.0),
+              Column(
+                children: [
+                  spacing(passedHeight: height / 10),
+                  text(),
+                  spacing(passedHeight: height / 10),
+                  ...List.generate(
+                    list.length,
+                    (ind) => Padding(
+                      padding: EdgeInsets.only(
+                          left: width / 20.0, right: width / 20.0),
+                      child: InkWell(
+                        onTap: () {
+                          /// print("");
+                        },
                         child: item(
                           list[ind],
                           ind,
@@ -80,21 +84,29 @@ class _UserTypeState extends State<UserType> {
                         ),
                       ),
                     ),
-                    spacing(passedHeight: height / 2),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: width / 20.0, right: width / 20.0),
-                      child: customButton(title: "Continue", context: context),
-                    ),
-                  ],
-                ),
+                  ),
+                  spacing(passedHeight: height / 2),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: width / 20.0, right: width / 20.0),
+                    child: customButton(
+                        title: "Continue",
+                        context: context,
+                        onTap: () {
+                          Get.to(() => const SalariedAnnualIncome());
+                        }),
+                  ),
+                ],
               ),
               Positioned(
                 bottom: -height / 8,
-                child: Image.asset(
-                  "assets/images/home_flare.png",
-                  width: width,
-                  height: height / 1.75,
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: Image.asset(
+                    "assets/images/home_flare.png",
+                    width: width,
+                    height: height / 1.75,
+                  ),
                 ),
               ),
             ],

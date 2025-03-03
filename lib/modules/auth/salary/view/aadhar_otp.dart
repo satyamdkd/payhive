@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/aadhar_details.dart';
 import 'package:payhive/modules/auth/salary/view/user_type.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
@@ -20,7 +21,7 @@ final defaultPinTheme = PinTheme(
     borderRadius: BorderRadius.circular(8),
   ),
 );
-Container otp(BuildContext context) {
+Container otpAadhar(BuildContext context) {
   return Container(
     height: MediaQuery.sizeOf(context).height / 1.35,
     width: width,
@@ -107,7 +108,7 @@ Container otp(BuildContext context) {
                   title: "Continue",
                   context: context,
                   onTap: () {
-                    Get.to(() => const UserType());
+                    Get.to(() => const AadharDetails());
                   }),
               spacing(passedHeight: height / 8),
             ],

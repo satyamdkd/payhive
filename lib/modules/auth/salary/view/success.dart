@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:payhive/modules/auth/salary/view/otp.dart';
-import 'package:payhive/modules/auth/salary/view/pan_verification.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
 import 'package:payhive/utils/widgets/textfield.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class CompleteYourKYC extends StatefulWidget {
-  const CompleteYourKYC({super.key});
+class Success extends StatefulWidget {
+  const Success({super.key});
 
   @override
-  State<CompleteYourKYC> createState() => _CompleteYourKYCState();
+  State<Success> createState() => _SuccessState();
 }
 
-class _CompleteYourKYCState extends State<CompleteYourKYC> {
+class _SuccessState extends State<Success> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,102 +30,135 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
       animationDuration: 2000,
       padding: EdgeInsets.zero,
       lineHeight: height / 100,
-      percent: 0.5,
+      percent: 1,
       backgroundColor: appColors.primaryExtraLight,
       progressColor: appColors.green,
-    );
-  }
-
-  Container text() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(
-        top: width / 20,
-        left: width / 18,
-        right: width / 20,
-      ),
-      child: Text(
-        "Complete Your KYC",
-        style: theme.textTheme.headlineSmall?.copyWith(
-            color: appColors.primaryColor, fontWeight: FontWeight.w600),
-      ),
     );
   }
 
   Widget body() {
     return SafeArea(
       child: Container(
-          height: MediaQuery.sizeOf(context).height,
-          width: MediaQuery.sizeOf(context).width,
-          color: const Color(0xffF8F2FF),
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    spacing(passedHeight: height / 10),
-                    text(),
-                    spacing(passedHeight: height / 60),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(left: width / 16),
-                      child: Text(
-                        "Complete your KYC to unlock secured and seamless transactions of Pay Hive",
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: appColors.textDark,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    spacing(passedHeight: height / 10),
-                    SizedBox(
-                      height: height / 1,
-                      width: width,
-                      child: Image.asset(
-                        "assets/images/com_ur_kyc.png",
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                    spacing(passedHeight: height / 5),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: width / 20.0, right: width / 20.0),
-                      child: customButton(
-                          title: "Continue",
-                          context: context,
-                          onTap: () {
-                            Get.to(() => const PanVerifySalaried());
-                          }),
-                    ),
-                    spacing(passedHeight: height / 50),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding:
-                          EdgeInsets.only(left: width / 16, right: width / 16),
-                      child: Text(
-                        "Keep Your PAN , Aadhar and Account Number Handy, This will take Only Few Minutes",
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: appColors.textDark,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: -height / 8,
-                child: IgnorePointer(
-                  ignoring: true,
+        height: MediaQuery.sizeOf(context).height,
+        width: MediaQuery.sizeOf(context).width,
+        color: const Color(0xffF8F2FF),
+        child: Stack(
+          children: [
+            progress(),
+            Column(
+              children: [
+                spacing(passedHeight: height / 1.5),
+                SizedBox(
+                  height: height / 3,
+                  width: width,
                   child: Image.asset(
-                    "assets/images/home_flare.png",
-                    width: width,
-                    height: height / 1.75,
+                    "assets/icons/successmark.png",
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
+                spacing(),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: width / 16, right: width / 16),
+                  child: Text(
+                    "Congratulation your KYC\nProcessed is completed ",
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: appColors.primaryColor,
+                      fontWeight: FontWeight.w300,
+                      fontSize: height / 20,
+                    ),
+                  ),
+                ),
+                spacer(),
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: width / 20.0, right: width / 20.0),
+                  child: customButton(
+                      title: "Done", context: context, onTap: () {}),
+                ),
+                spacing(passedHeight: height / 6),
+              ],
+            ),
+            Positioned(
+              bottom: -height / 8,
+              child: IgnorePointer(
+                ignoring: true,
+                child: Image.asset(
+                  "assets/images/home_flare.png",
+                  width: width,
+                  height: height / 1.75,
+                ),
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget searchedVillageListWidget() {
+    return Container(
+      height: 150,
+      margin: EdgeInsets.only(
+        left: width / 20.0,
+        right: width / 20.0,
+      ),
+      padding: EdgeInsets.only(
+        top: width / 30,
+      ),
+      decoration: BoxDecoration(
+        color: appColors.white,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(4),
+          bottomRight: Radius.circular(4),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: ListView.builder(
+        itemCount: 3,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: width / 20.0,
+              vertical: width / 30.0,
+            ),
+            margin: EdgeInsets.only(
+              left: width / 30.0,
+              right: width / 30.0,
+            ),
+            decoration: index == 0
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                      stops: const [-1, 2.0],
+                      colors: [
+                        appColors.primaryColor,
+                        appColors.primaryColor,
+                      ],
+                    ),
+                  )
+                : null,
+            child: Text(
+              "5 to 10 Lakh",
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: index == 0 ? appColors.white : appColors.black,
+                fontSize: height / 36,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 

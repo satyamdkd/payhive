@@ -45,5 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>Hay hive needs camera access for taking photos</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Hay hive needs camera access for taking photos/string>
+
 </dict>
 </plist>

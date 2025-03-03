@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/aadhar_details.dart';
+import 'package:payhive/modules/auth/salary/view/aadhar_otp.dart';
 import 'package:payhive/modules/auth/salary/view/otp.dart';
 import 'package:payhive/modules/auth/salary/view/pan_details.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -8,20 +10,22 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 
-class PanVerifySalaried extends StatefulWidget {
-  const PanVerifySalaried({super.key});
+class AadharVerificationSalaried extends StatefulWidget {
+  const AadharVerificationSalaried({super.key});
 
   @override
-  State<PanVerifySalaried> createState() => _PanVerifySalariedState();
+  State<AadharVerificationSalaried> createState() =>
+      _AadharVerificationSalariedState();
 }
 
-class _PanVerifySalariedState extends State<PanVerifySalaried> {
+class _AadharVerificationSalariedState
+    extends State<AadharVerificationSalaried> {
   @override
   void initState() {
     super.initState();
   }
 
-  bool isOTPScreen = false;
+  bool isAadharOTPScreen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                 spacing(passedHeight: height / 7),
                 text(),
                 spacer(),
-                pan(context)
+                isAadharOTPScreen ? otpAadhar(context) : aadhar(context)
               ],
             ),
           ),
@@ -60,7 +64,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
 
   bool isTermChecked = false;
 
-  Container pan(BuildContext context) {
+  Container aadhar(BuildContext context) {
     return Container(
       height: MediaQuery.sizeOf(context).height / 1.35,
       width: width,
@@ -81,7 +85,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                 customTextField(
                   textEditingController: TextEditingController(),
                   title: "",
-                  fullTag: "Pan Number",
+                  fullTag: "Aadhar Number",
                   keyboardType: TextInputType.phone,
                 ),
                 spacing(passedHeight: height / 40),
@@ -92,17 +96,9 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          isTermChecked
-                              ? "assets/icons/checkbox.png"
-                              : "assets/icons/blank_checkbox.png",
-                          height: height / 24,
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(width: width / 60),
                         Expanded(
                           child: Text(
-                            "I am aware that my details will be submitted to NSDL to verify my PAN. I have read and understood all terms.",
+                            "OTP will be sent to your Aadhaar-linked mobile",
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: const Color(0xff222222),
                               fontSize: height / 30,
@@ -116,10 +112,12 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                 ),
                 spacer(),
                 customButton(
-                    title: "Verify",
+                    title: "Send OTP",
                     context: context,
                     onTap: () {
-                      Get.to(() => const PanDetails());
+                      setState(() {
+                        isAadharOTPScreen = true;
+                      });
                     }),
                 spacing(passedHeight: height / 8),
               ],
@@ -150,7 +148,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
         right: width / 20,
       ),
       child: Text(
-        "Enter Your\nPAN Number",
+        "Enter Your\nAadhar Number",
         style: theme.textTheme.headlineSmall
             ?.copyWith(color: appColors.white, fontWeight: FontWeight.w600),
       ),

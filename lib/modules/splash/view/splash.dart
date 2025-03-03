@@ -3,9 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/aadhar_details.dart';
 import 'package:payhive/modules/auth/salary/view/complete_your_kyc.dart';
+import 'package:payhive/modules/auth/salary/view/lets_verify_id.dart';
+import 'package:payhive/modules/auth/salary/view/pan_details.dart';
 import 'package:payhive/modules/auth/salary/view/pan_verification.dart';
 import 'package:payhive/modules/auth/salary/view/salaried.dart';
+import 'package:payhive/modules/auth/salary/view/salaried_annual_income.dart';
 import 'package:payhive/modules/auth/salary/view/user_type.dart';
 import 'package:payhive/modules/dashboard/view/dashboard.dart';
 import 'package:payhive/services/di/di.dart';
@@ -34,10 +38,10 @@ class _SplashState extends State<Splash> {
       if (userMap != null && userMap.toString() != "null") {
         if (jsonDecode(userMap)['user']['id'] != null &&
             jsonDecode(userMap)['user']['id'].toString() != "") {
-          Get.off(() => const PanVerifySalaried());
+          Get.off(() => const Salaried());
         }
       } else {
-        Get.off(() => const PanVerifySalaried());
+        Get.off(() => const Salaried());
       }
     });
   }
