@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:payhive/modules/dashboard/bloc/dashboard_bloc.dart';
+import 'package:payhive/modules/dashboard/view/screens/add_money.dart';
+import 'package:payhive/modules/dashboard/view/screens/wallet.dart';
+import 'package:payhive/modules/wallet_history/view/wallet_history.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 
@@ -18,30 +21,16 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: appColors.white,
+      backgroundColor: appColors.bgColorHome,
+      appBar: AppBar(backgroundColor: appColors.primaryColor,),
       body: body(),
       bottomNavigationBar: buildNavBar(),
     );
   }
 
-
   Widget body() {
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              ...List.generate(
-                20,
-                (ind) => Container(
-                  margin: EdgeInsets.only(bottom: height / 80),
-                  height: 100,
-                  color: appColors.grey.withOpacity(0.4),
-                ),
-              ),
-            ],
-          ),
-        ),
         Positioned(
           bottom: 0,
           child: IgnorePointer(
@@ -53,6 +42,8 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
+        const WalletScreen(),
+
       ],
     );
   }

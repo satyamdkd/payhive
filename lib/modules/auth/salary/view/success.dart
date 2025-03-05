@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:payhive/modules/auth/salary/view/otp.dart';
+import 'package:payhive/modules/dashboard/view/dashboard.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -74,7 +76,11 @@ class _SuccessState extends State<Success> {
                   padding:
                       EdgeInsets.only(left: width / 20.0, right: width / 20.0),
                   child: customButton(
-                      title: "Done", context: context, onTap: () {}),
+                      title: "Done",
+                      context: context,
+                      onTap: () {
+                        Get.to(() => const Dashboard());
+                      }),
                 ),
                 spacing(passedHeight: height / 6),
               ],

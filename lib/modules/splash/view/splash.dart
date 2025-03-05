@@ -38,10 +38,14 @@ class _SplashState extends State<Splash> {
       if (userMap != null && userMap.toString() != "null") {
         if (jsonDecode(userMap)['user']['id'] != null &&
             jsonDecode(userMap)['user']['id'].toString() != "") {
-          Get.off(() => const Salaried());
+          Get.to(() => const Dashboard());
+
+          /// Get.off(() => const Salaried());
         }
       } else {
-        Get.off(() => const Salaried());
+        Get.to(() => const Dashboard());
+
+        /// Get.off(() => const Salaried());
       }
     });
   }
