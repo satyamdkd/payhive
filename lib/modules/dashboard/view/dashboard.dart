@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:payhive/modules/add_beneficiary/view/add_beneficiary.dart';
 import 'package:payhive/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:payhive/modules/dashboard/view/screens/add_money.dart';
 import 'package:payhive/modules/dashboard/view/screens/wallet.dart';
+import 'package:payhive/modules/pay_vendor/view/vendor_pay.dart';
 import 'package:payhive/modules/wallet_history/view/wallet_history.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
@@ -22,7 +24,9 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       extendBody: true,
       backgroundColor: appColors.bgColorHome,
-      appBar: AppBar(backgroundColor: appColors.primaryColor,),
+      appBar: AppBar(
+        backgroundColor: appColors.primaryColor,
+      ),
       body: body(),
       bottomNavigationBar: buildNavBar(),
     );
@@ -42,8 +46,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        const WalletScreen(),
-
+        const AddBeneficiary(),
       ],
     );
   }

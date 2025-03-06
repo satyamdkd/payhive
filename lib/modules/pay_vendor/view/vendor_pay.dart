@@ -1,4 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:payhive/utils/screen_size.dart';
+import 'package:payhive/utils/theme/apptheme.dart';
+import 'package:payhive/utils/widgets/button.dart';
+import 'package:payhive/utils/widgets/textfield.dart';
 
 class VendorPaymentScreen extends StatefulWidget {
   const VendorPaymentScreen({super.key});
@@ -11,22 +16,26 @@ class _VendorPaymentScreenState extends State<VendorPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(height / 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: height / 20),
           _buildHeader(),
-          SizedBox(height: 16),
+          SizedBox(height: height / 20),
           _buildSearchBar(),
-          SizedBox(height: 16),
+          SizedBox(height: height / 20),
           _buildActionButtons(),
-          SizedBox(height: 16),
-          Text("Recipient List",
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple)),
-          SizedBox(height: 8),
+          SizedBox(height: height / 30),
+          Text(
+            "Recipient List",
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: appColors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: height / 24,
+            ),
+          ),
+          SizedBox(height: height / 40),
           Expanded(
             child: ListView.builder(
               itemCount: 3,
@@ -42,61 +51,83 @@ class _VendorPaymentScreenState extends State<VendorPaymentScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(height / 30),
       decoration: BoxDecoration(
-        color: Colors.purple[100],
+        color: const Color(0xffEAE0F4),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Icon(Icons.account_balance_wallet, color: Colors.black54),
-          SizedBox(width: 8),
-          Text("Vendor Payment",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Icon(Icons.people_alt_outlined, color: appColors.textDark),
+          SizedBox(
+            width: width / 30,
+          ),
+          Text(
+            "Vendor Payment",
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: appColors.textDark,
+              fontWeight: FontWeight.bold,
+              fontSize: height / 26,
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        hintText: "Search beneficiary by name, account or bank",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.grey),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(width / 50),
+        color: appColors.white,
+      ),
+      child: customTextField(
+        textEditingController: TextEditingController(),
+        border: false,
+        prefixIcon: Container(
+          padding: EdgeInsets.all(width / 26),
+          child: Icon(
+            CupertinoIcons.search,
+            size: height / 18,
+          ),
         ),
-        filled: true,
-        fillColor: Colors.white,
+        fullTag: "Search beneficiary by name, account or bank",
+        title: "",
+        keyboardType: TextInputType.text,
       ),
     );
   }
 
   Widget _buildActionButtons() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ElevatedButton.icon(
-          onPressed: () {},
-          icon: Icon(Icons.add),
-          label: Text("Add Beneficiary"),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple,
-            foregroundColor: Colors.white,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
+        customButton(
+          passedHeight: height / 11,
+          passedWidth: width / 2.4,
+          title: "Add Beneficiary",
+          context: context,
+          onTap: () {},
         ),
-        OutlinedButton.icon(
-          onPressed: () {},
-          icon: Icon(Icons.favorite_border),
-          label: Text("Favorites"),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.purple,
-            side: BorderSide(color: Colors.purple),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        SizedBox(width: width / 30),
+        SizedBox(
+          height: height / 11,
+          child: OutlinedButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.favorite_border, size: height / 20),
+            label: Text(
+              "Favorites",
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: appColors.primaryLight,
+                fontWeight: FontWeight.w400,
+                fontSize: height / 28,
+              ),
+            ),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: appColors.primaryLight,
+              side: BorderSide(color: appColors.primaryLight),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(height / 40)),
+            ),
           ),
         ),
       ],
@@ -105,67 +136,102 @@ class _VendorPaymentScreenState extends State<VendorPaymentScreen> {
 
   Widget _buildRecipientItem() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: height / 30),
+      padding: EdgeInsets.all(height / 30),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+        borderRadius: BorderRadius.circular(height / 30),
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.receipt_long, color: Colors.purple),
-                  SizedBox(width: 8),
-                  Text("Sunil Kumar",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Icon(
+                    Icons.receipt_long,
+                    color: appColors.primaryLight,
+                    size: height / 18,
+                  ),
+                  SizedBox(width: width / 40),
+                  Text(
+                    "Sunil Kumar",
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: appColors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: height / 28,
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.only(left: 32.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("A/C: 765489753209",
-                        style: TextStyle(color: Colors.black54)),
-                    Text("ICICI Bank Limited",
-                        style: TextStyle(color: Colors.black54)),
-                  ],
-                ),
+              SizedBox(width: width / 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  customButton(
+                    passedHeight: height / 12,
+                    passedWidth: width / 3.8,
+                    title: "Transfer",
+                    context: context,
+                    onTap: () {},
+                  ),
+                  SizedBox(width: width / 60),
+                  SizedBox(
+                    height: height / 12,
+                    width: width / 3.8,
+                    child: OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(CupertinoIcons.delete, size: height / 24),
+                      label: Text(
+                        "Delete",
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: appColors.red,
+                          fontWeight: FontWeight.w400,
+                          fontSize: height / 32,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: appColors.red,
+                        side: BorderSide(color: appColors.red),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(height / 40)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+          SizedBox(height: height / 80),
+          Padding(
+            padding: EdgeInsets.only(
+              left: height / 14,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "A/C: 765489753209",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withOpacity(0.5),
+                    fontWeight: FontWeight.w400,
+                    fontSize: height / 30,
+                  ),
                 ),
-                child: Text("Transfer"),
-              ),
-              SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                Text(
+                  "ICICI Bank Limited",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withOpacity(0.5),
+                    fontWeight: FontWeight.w400,
+                    fontSize: height / 30,
+                  ),
                 ),
-                child: Text("Delete"),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

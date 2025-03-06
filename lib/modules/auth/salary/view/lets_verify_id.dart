@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/modules/auth/salary/view/otp.dart';
+import 'package:payhive/trash_code/otp.dart';
 import 'package:payhive/modules/auth/salary/view/success.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';

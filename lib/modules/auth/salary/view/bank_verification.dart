@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/trash_code/otp.dart';
-import 'package:payhive/modules/auth/salary/view/pan_details.dart';
-import 'package:payhive/utils/widgets/button.dart';
-import 'package:payhive/utils/widgets/textfield.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:payhive/modules/auth/salary/view/lets_verify_id.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
+import 'package:payhive/utils/widgets/button.dart';
+import 'package:payhive/utils/widgets/textfield.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class PanVerifySalaried extends StatefulWidget {
-  const PanVerifySalaried({super.key});
+class BankVerification extends StatefulWidget {
+  const BankVerification({super.key});
 
   @override
-  State<PanVerifySalaried> createState() => _PanVerifySalariedState();
+  State<BankVerification> createState() => _BankVerificationState();
 }
 
-class _PanVerifySalariedState extends State<PanVerifySalaried> {
+class _BankVerificationState extends State<BankVerification> {
   @override
   void initState() {
     super.initState();
@@ -45,7 +44,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                 spacing(passedHeight: height / 7),
                 text(),
                 spacer(),
-                pan(context)
+                bank(context)
               ],
             ),
           ),
@@ -58,7 +57,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
 
   bool isTermChecked = false;
 
-  Container pan(BuildContext context) {
+  Container bank(BuildContext context) {
     return Container(
       height: MediaQuery.sizeOf(context).height / 1.35,
       width: width,
@@ -75,40 +74,36 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
             padding: EdgeInsets.only(left: width / 20, right: width / 20),
             child: Column(
               children: [
-                spacing(),
+                spacing(passedHeight: height / 10),
                 customTextField(
                   textEditingController: TextEditingController(),
                   title: "",
-                  fullTag: "Pan Number",
+                  fullTag: "Full Name",
                   keyboardType: TextInputType.phone,
                 ),
-                spacing(passedHeight: height / 40),
+                spacing(passedHeight: height / 20),
+                customTextField(
+                  textEditingController: TextEditingController(),
+                  title: "",
+                  fullTag: "Bank Account Number",
+                  keyboardType: TextInputType.phone,
+                ),
+                spacing(passedHeight: height / 20),
+                customTextField(
+                  textEditingController: TextEditingController(),
+                  title: "",
+                  fullTag: "IFSC Code",
+                  keyboardType: TextInputType.phone,
+                ),
+                spacing(passedHeight: height / 20),
                 Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          isTermChecked
-                              ? "assets/icons/checkbox.png"
-                              : "assets/icons/blank_checkbox.png",
-                          height: height / 24,
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(width: width / 60),
-                        Expanded(
-                          child: Text(
-                            "I am aware that my details will be submitted to NSDL to verify my PAN. I have read and understood all terms.",
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: const Color(0xff222222),
-                              fontSize: height / 30,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    "Complete verification with a penny drop of ₹1 to customer provided bank account details.",
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: const Color(0xff222222),
+                      fontSize: height / 32,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ),
@@ -117,7 +112,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
                     title: "Verify",
                     context: context,
                     onTap: () {
-                      Get.to(() => const PanDetails());
+                      Get.to(() => const LetsVerifyYourIdentity());
                     }),
                 spacing(passedHeight: height / 8),
               ],
@@ -148,7 +143,7 @@ class _PanVerifySalariedState extends State<PanVerifySalaried> {
         right: width / 20,
       ),
       child: Text(
-        "Enter Your\nPAN Number",
+        "Enter Your\nBank Account Details",
         style: theme.textTheme.headlineSmall
             ?.copyWith(color: appColors.white, fontWeight: FontWeight.w600),
       ),

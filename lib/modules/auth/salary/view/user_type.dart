@@ -42,7 +42,7 @@ class _UserTypeState extends State<UserType> {
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(
         top: width / 20,
-        left: width / 18,
+        left: width / 15,
         right: width / 20,
       ),
       child: Text(
@@ -131,77 +131,79 @@ class _UserTypeState extends State<UserType> {
   ];
 
   Widget item(path, index, title, subtitle) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      width: width,
-      margin: EdgeInsets.only(bottom: width / 40, left: 1, right: 1),
-      padding:
-          EdgeInsets.symmetric(vertical: width / 30, horizontal: width / 30),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: appColors.white,
-      ),
-      child: Stack(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                index == 0
-                    ? "assets/icons/checkbox.png"
-                    : "assets/icons/blank_checkbox.png",
-                height: height / 18,
-                fit: BoxFit.contain,
-              ),
-              SizedBox(width: width / 40),
-              Container(
-                decoration: BoxDecoration(
-                  color: appColors.primaryLight.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(1000.0),
+    return Card(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        width: width,
+        margin: EdgeInsets.only(bottom: width / 40, left: 1, right: 1),
+        padding:
+            EdgeInsets.symmetric(vertical: width / 30, horizontal: width / 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: appColors.white,
+        ),
+        child: Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  index == 0
+                      ? "assets/icons/checkbox.png"
+                      : "assets/icons/blank_checkbox.png",
+                  height: height / 18,
+                  fit: BoxFit.contain,
                 ),
-                padding: const EdgeInsets.all(25),
-                child: SizedBox(
-                  height: height / 14,
-                  width: height / 14,
-                  child: Image.asset(
-                    path,
-                    fit: BoxFit.contain,
+                SizedBox(width: width / 40),
+                Container(
+                  decoration: BoxDecoration(
+                    color: appColors.primaryLight.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(1000.0),
+                  ),
+                  padding: const EdgeInsets.all(25),
+                  child: SizedBox(
+                    height: height / 12,
+                    width: height / 12,
+                    child: Image.asset(
+                      path,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      textScaler: TextScaler.noScaling,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: appColors.textDark,
-                        fontWeight: FontWeight.w500,
-                        fontSize: width / 26,
-                        letterSpacing: 1,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        textScaler: TextScaler.noScaling,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: appColors.textDark,
+                          fontWeight: FontWeight.w500,
+                          fontSize: width / 26,
+                          letterSpacing: 1,
+                        ),
                       ),
-                    ),
-                    Text(
-                      subtitle,
-                      textScaler: TextScaler.noScaling,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: appColors.textDark,
-                        fontWeight: FontWeight.w400,
-                        fontSize: width / 36,
-                        letterSpacing: 1,
+                      Text(
+                        subtitle,
+                        textScaler: TextScaler.noScaling,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: appColors.textDark,
+                          fontWeight: FontWeight.w400,
+                          fontSize: width / 36,
+                          letterSpacing: 1,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

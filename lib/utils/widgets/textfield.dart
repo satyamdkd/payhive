@@ -25,6 +25,7 @@ Widget customTextField({
   inputFormatter,
   onChanged,
   textColor,
+  bool border = true,
 }) {
   return FormField(
     validator: validator ??
@@ -59,23 +60,29 @@ Widget customTextField({
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(width / 50),
-                borderSide: BorderSide(
-                  color: appColors.black.withOpacity(0.35),
-                  width: 0.6,
-                ),
+                borderSide: border
+                    ? BorderSide(
+                        color: appColors.black.withOpacity(0.35),
+                        width: 0.6,
+                      )
+                    : BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(width / 50),
-                borderSide: BorderSide(
-                  color: appColors.black.withOpacity(0.35),
-                  width: 0.6,
-                ),
+                borderSide: border
+                    ? BorderSide(
+                        color: appColors.black.withOpacity(0.35),
+                        width: 0.6,
+                      )
+                    : BorderSide.none,
               ),
               border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: appColors.black.withOpacity(0.35),
-                  width: 0.6,
-                ),
+                borderSide: border
+                    ? BorderSide(
+                        color: appColors.black.withOpacity(0.35),
+                        width: 0.6,
+                      )
+                    : BorderSide.none,
                 borderRadius: BorderRadius.circular(width / 50),
               ),
               hintText: capitalizeFirstCharacter(fullTag ??
@@ -91,7 +98,7 @@ Widget customTextField({
               prefix: prefix,
             ),
           ),
-          SizedBox(height: height / 80),
+          if (field.hasError) SizedBox(height: height / 80),
           if (field.hasError)
             Text(
               capitalizeFirstCharacter(field.errorText!),

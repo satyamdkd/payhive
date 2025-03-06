@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/bank_verification.dart';
 import 'package:payhive/modules/auth/salary/view/lets_verify_id.dart';
 import 'package:payhive/utils/widgets/button.dart';
 import 'package:payhive/utils/widgets/textfield.dart';
@@ -243,10 +244,12 @@ class _AadharDetailsState extends State<AadharDetails> {
                   ),
                 ),
                 spacer(),
-                customButton(title: "Continue", context: context, onTap: () {
-                  Get.to(()=>const LetsVerifyYourIdentity());
-
-                }),
+                customButton(
+                    title: "Continue",
+                    context: context,
+                    onTap: () {
+                      Get.to(() => const BankVerification());
+                    }),
                 spacing(passedHeight: height / 8),
               ],
             ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:payhive/modules/auth/salary/view/otp.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/auth/salary/view/user_type.dart';
 import 'package:payhive/utils/widgets/button.dart';
 import 'package:payhive/utils/widgets/textfield.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
+import 'package:pinput/pinput.dart';
 
 class Salaried extends StatefulWidget {
   const Salaried({super.key});
@@ -18,8 +20,6 @@ class _SalariedState extends State<Salaried> {
   void initState() {
     super.initState();
   }
-
-  bool isOTPScreen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _SalariedState extends State<Salaried> {
                 spacing(passedHeight: height / 7),
                 welcomeText(),
                 spacer(),
-                isOTPScreen ? otp(context) : mobile(context)
+                mobile(context)
               ],
             ),
           ),
@@ -56,8 +56,23 @@ class _SalariedState extends State<Salaried> {
 
   Spacer spacer() => const Spacer();
 
+  bool isOTPScreen = false;
   bool isTermChecked = false;
+  bool editNumber = false;
 
+  final defaultPinTheme = PinTheme(
+    width: height / 7.5,
+    height: height / 7.5,
+    textStyle: TextStyle(
+        fontSize: height / 16,
+        color: const Color.fromRGBO(30, 60, 87, 1),
+        fontWeight: FontWeight.w600),
+    decoration: BoxDecoration(
+      border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+      borderRadius: BorderRadius.circular(8),
+    ),
+  );
+  TextEditingController phoneNumber = TextEditingController();
   Container mobile(BuildContext context) {
     return Container(
       height: MediaQuery.sizeOf(context).height / 1.35,
@@ -89,11 +104,105 @@ class _SalariedState extends State<Salaried> {
                 ),
                 spacing(passedHeight: height / 60),
                 customTextField(
-                  textEditingController: TextEditingController(),
+                  textEditingController: phoneNumber,
                   title: "phone",
+                  readOnly: isOTPScreen,
                   keyboardType: TextInputType.phone,
+                  suffixIcon: isOTPScreen
+                      ? Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: height / 30,
+                            horizontal: width / 30,
+                          ),
+                          child: customButton(
+                            passedHeight: height / 14,
+                            passedWidth: width / 5.8,
+                            title: "Change",
+                            context: context,
+                            onTap: () {
+                              setState(() {
+                                isOTPScreen = false;
+                              });
+                            },
+                          ),
+                        )
+                      : null,
                 ),
-                spacing(passedHeight: height / 60),
+                spacing(passedHeight: height / 20),
+                Image.asset(
+                  "assets/images/payments_icons.png",
+                  width: width / 1.2,
+                ),
+                if (isOTPScreen)
+                  Column(
+                    children: [
+                      spacing(passedHeight: height / 20),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: width / 80),
+                        child: Text(
+                          "OTP code has been sent to +91 8556655255 enter the code below to continue.",
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: appColors.textDark,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      spacing(passedHeight: height / 60),
+                      Center(
+                        child: Pinput(
+                          controller: TextEditingController(),
+                          defaultPinTheme: PinTheme(
+                            width: height / 7.5,
+                            height: height / 7.5,
+                            textStyle: TextStyle(
+                                fontSize: height / 16,
+                                color: const Color.fromRGBO(30, 60, 87, 1),
+                                fontWeight: FontWeight.w600),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.grey.shade300, width: 1.0),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          length: 6,
+                          focusedPinTheme: defaultPinTheme.copyDecorationWith(
+                            border: Border.all(
+                                color: appColors.primaryColor, width: 1.0),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          submittedPinTheme: defaultPinTheme.copyWith(
+                            decoration: defaultPinTheme.decoration?.copyWith(
+                              color: const Color.fromRGBO(234, 239, 243, 1),
+                            ),
+                          ),
+                          pinputAutovalidateMode:
+                              PinputAutovalidateMode.onSubmit,
+                          showCursor: true,
+                          onChanged: (pin) {},
+                          onCompleted: (pin) {},
+                        ),
+                      ),
+                      spacing(passedHeight: height / 40),
+                      Text(
+                        "00:53",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: appColors.textLight,
+                          fontWeight: FontWeight.w400,
+                          fontSize: height / 20,
+                        ),
+                      ),
+                      spacing(passedHeight: height / 60),
+                      Text(
+                        "Resend code",
+                        style: theme.textTheme.labelLarge?.copyWith(
+                            color: appColors.textLight,
+                            fontWeight: FontWeight.w300,
+                            fontSize: height / 32,
+                            decoration: TextDecoration.underline),
+                      ),
+                    ],
+                  ),
                 spacer(),
                 Padding(
                   padding: const EdgeInsets.only(left: 3.0),
@@ -142,13 +251,18 @@ class _SalariedState extends State<Salaried> {
                 ),
                 spacing(passedHeight: height / 60),
                 customButton(
-                    title: "Next",
-                    context: context,
-                    onTap: () {
+                  title: isOTPScreen ? "Next" : "Verify",
+                  context: context,
+                  onTap: () {
+                    if (isOTPScreen) {
+                      Get.to(() => const UserType());
+                    } else {
                       setState(() {
                         isOTPScreen = true;
                       });
-                    }),
+                    }
+                  },
+                ),
                 spacing(passedHeight: height / 8),
               ],
             ),
@@ -178,9 +292,7 @@ class _SalariedState extends State<Salaried> {
         right: width / 20,
       ),
       child: Text(
-        isOTPScreen
-            ? "Enter the OTP"
-            : "Welcome to Pay Hive.\nLet’s get you started",
+        "Welcome to Pay Hive.\nLet’s get you started",
         style: theme.textTheme.headlineSmall
             ?.copyWith(color: appColors.white, fontWeight: FontWeight.w600),
       ),
