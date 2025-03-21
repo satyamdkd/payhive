@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
   String userTypeKey = "USERTYPE";
   String userIdKey = "USER";
   String tokenKey = "TOKEN";
-  String tempEmailKey = "TEMP_EMAIL";
+  String tempMobileKey = "TEMP_EMAIL";
   String mapStarted = "MAP_STARTED";
 
   final Future<SharedPreferences> sharedPref = SharedPreferences.getInstance();
@@ -29,6 +29,8 @@ class SharedPref {
   void saveUser({userData}) async {
     final SharedPreferences prefs = await sharedPref;
     await prefs.setString(userIdKey, jsonEncode(userData));
+    debugPrint("USER SAVED");
+
   }
 
   Future getUser() async {
@@ -52,15 +54,15 @@ class SharedPref {
     return action;
   }
 
-  void saveTempEmail({String? email}) async {
+  void saveTempMobile({String? mobile}) async {
     final SharedPreferences prefs = await sharedPref;
-    await prefs.setString(tempEmailKey, email!);
+    await prefs.setString(tempMobileKey, mobile!);
   }
 
-  Future<String?> getTempEmail() async {
+  Future<String?> getTempMobile() async {
     final SharedPreferences prefs = await sharedPref;
-    if (prefs.getString(tempEmailKey) != null) {
-      return prefs.getString(tempEmailKey);
+    if (prefs.getString(tempMobileKey) != null) {
+      return prefs.getString(tempMobileKey);
     } else {
       return null;
     }
@@ -84,13 +86,13 @@ class SharedPref {
     final SharedPreferences prefs = await sharedPref;
     await prefs.remove(userIdKey);
     await prefs.remove(tokenKey);
-    await prefs.remove(tempEmailKey);
+    await prefs.remove(tempMobileKey);
     await prefs.remove(userTypeKey);
   }
 
-  clearTempEmail() async {
+  clearTempMobile() async {
     final SharedPreferences prefs = await sharedPref;
-    await prefs.remove(tempEmailKey);
+    await prefs.remove(tempMobileKey);
   }
 
   clearMap() async {

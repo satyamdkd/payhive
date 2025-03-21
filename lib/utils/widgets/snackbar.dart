@@ -63,7 +63,7 @@ showSnackBar({title, required message, color, Duration? duration}) {
             color: appColors.white,
           ),
           child: Image.asset(
-            "assets/images/afpi_logo.png",
+            "assets/icons/logo.png",
             height: height / 20,
             width: height / 20,
           ),
@@ -73,8 +73,8 @@ showSnackBar({title, required message, color, Duration? duration}) {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              title ?? "AFPI",
-              textScaler: TextScaler.noScaling,
+              title ?? "PayHive",
+              
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: appColors.white,
                 fontSize: height / 32,
@@ -87,7 +87,7 @@ showSnackBar({title, required message, color, Duration? duration}) {
               width: width / 1.4,
               child: Text(
                 "${capitalizeFirstCharacter(mes)}",
-                textScaler: TextScaler.noScaling,
+                
                 maxLines: null,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: appColors.white,

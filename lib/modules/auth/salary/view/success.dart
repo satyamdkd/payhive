@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payhive/routes/pages.dart';
 import 'package:payhive/trash_code/otp.dart';
 import 'package:payhive/modules/dashboard/view/dashboard.dart';
 import 'package:payhive/utils/screen_size.dart';
@@ -79,7 +80,7 @@ class _SuccessState extends State<Success> {
                       title: "Done",
                       context: context,
                       onTap: () {
-                        Get.to(() => const Dashboard());
+                        Get.offAllNamed(Routes.dashboard);
                       }),
                 ),
                 spacing(passedHeight: height / 6),
@@ -232,7 +233,7 @@ class _SuccessState extends State<Success> {
                   children: [
                     Text(
                       title,
-                      textScaler: TextScaler.noScaling,
+                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w500,
@@ -242,7 +243,7 @@ class _SuccessState extends State<Success> {
                     ),
                     Text(
                       subtitle,
-                      textScaler: TextScaler.noScaling,
+                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w400,

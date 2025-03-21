@@ -32,6 +32,7 @@ Widget customButton(
       ),
       child: Text(
         title,
+        
         style: theme.textTheme.labelLarge?.copyWith(
           color: appColors.white,
           fontSize: passedHeight != null ? passedHeight / 2.8 : height / 28,

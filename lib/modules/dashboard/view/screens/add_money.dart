@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/wallet_history/view/wallet_history.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -13,31 +15,37 @@ class AddMoney extends StatefulWidget {
 class _AddMoneyState extends State<AddMoney> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _buildBalanceSection(),
-          _buildSettlementTypeSelection(
-            "Choose the category of payment",
-            ["Utilities", "Non-Utilities"],
-            isFirst: true,
-          ),
-          _buildSettlementTypeSelection(
-            "Select Settlement Type",
-            ["Instant Settlement"],
-            isFirst: false,
-          ),
-          SizedBox(
-            height: height / 30,
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                left: width / 30.0, right: width / 30.0, bottom: height / 30),
-            child: customButton(
-                title: "Add Money", context: context, onTap: () {}),
-          ),
-          SizedBox(height: height / 8),
-        ],
+    return Scaffold(
+      appBar: AppBar(),
+      backgroundColor: appColors.bgColorHome,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildBalanceSection(),
+            _buildSettlementTypeSelection(
+              "Choose the category of payment",
+              ["Utilities", "Non-Utilities"],
+              isFirst: true,
+            ),
+            _buildSettlementTypeSelection(
+              "Select Settlement Type",
+              ["Instant Settlement"],
+              isFirst: false,
+            ),
+            SizedBox(
+              height: height / 30,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: width / 30.0, right: width / 30.0, bottom: height / 30),
+              child: customButton(
+                  title: "Add Money", context: context, onTap: () {
+                    Get.to(()=> WalletScreen());
+              }),
+            ),
+            SizedBox(height: height / 8),
+          ],
+        ),
       ),
     );
   }

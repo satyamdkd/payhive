@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/add_beneficiary/view/add_beneficiary.dart';
+import 'package:payhive/modules/pay_vendor/view/vendor_pay.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -18,24 +21,28 @@ class _WalletScreenState extends State<WalletScreen> {
     height = MediaQuery.sizeOf(context).height;
     width = MediaQuery.sizeOf(context).width;
 
-    return Column(
-      children: [
-        _buildBalanceCard(),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: height / 50),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(height / 60),
-            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
+    return Scaffold(
+      appBar: AppBar(),
+      backgroundColor: appColors.bgColorHome,
+      body: Column(
+        children: [
+          _buildBalanceCard(),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: height / 50),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(height / 60),
+              boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
+            ),
+            child: Column(
+              children: [
+                _buildTabBar(),
+                _buildTransactionList(),
+              ],
+            ),
           ),
-          child: Column(
-            children: [
-              _buildTabBar(),
-              _buildTransactionList(),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -57,6 +64,7 @@ class _WalletScreenState extends State<WalletScreen> {
           const SizedBox(height: 10),
           Text(
             "Total Balance",
+            
             style: theme.textTheme.labelMedium?.copyWith(
               color: appColors.textDark,
               fontWeight: FontWeight.w700,
@@ -65,6 +73,7 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           Text(
             "₹0.00",
+            
             style: theme.textTheme.labelMedium?.copyWith(
               color: appColors.primaryLight,
               fontWeight: FontWeight.w700,
@@ -185,7 +194,11 @@ class _WalletScreenState extends State<WalletScreen> {
         itemCount: 3,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return _transactionItem();
+          return InkWell(
+              onTap: (){
+                Get.to(()=> VendorPaymentScreen());
+              },
+              child: _transactionItem());
         },
       ),
     );

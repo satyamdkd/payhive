@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/trash_code/otp.dart';
-import 'package:payhive/modules/auth/salary/view/pan_verification.dart';
+import 'package:payhive/modules/auth/salary/view/pan_verify_salary.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -96,7 +95,7 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
                           title: "Continue",
                           context: context,
                           onTap: () {
-                            Get.to(() => const PanVerifySalaried());
+                            Get.to(() => const PanVerifySalary());
                           }),
                     ),
                     spacing(passedHeight: height / 50),
@@ -195,7 +194,7 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
                   children: [
                     Text(
                       title,
-                      textScaler: TextScaler.noScaling,
+                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w500,
@@ -205,7 +204,7 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
                     ),
                     Text(
                       subtitle,
-                      textScaler: TextScaler.noScaling,
+                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w400,

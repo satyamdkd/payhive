@@ -28,7 +28,7 @@ logoutDialog({
             SizedBox(height: height / 80),
             Text(
               "Logout?",
-              textScaler: TextScaler.noScaling,
+              
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   color: Colors.red,
@@ -42,9 +42,9 @@ logoutDialog({
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
+              
               textAlign: TextAlign.center,
               "Are you sure you want to logout?",
-              textScaler: TextScaler.noScaling,
               style: theme.textTheme.bodySmall?.copyWith(
                   color: const Color(0xff52575C),
                   fontSize: height / 28,
@@ -78,7 +78,7 @@ logoutDialog({
                   },
                   child: Text(
                     "No",
-                    textScaler: TextScaler.noScaling,
+                    
                     style: theme.textTheme.bodyLarge?.copyWith(
                         color: const Color(0xff303F9F),
                         fontWeight: FontWeight.w500,
@@ -107,7 +107,7 @@ logoutDialog({
                   },
                   child: Text(
                     "Yes",
-                    textScaler: TextScaler.noScaling,
+                    
                     style: theme.textTheme.bodyLarge?.copyWith(
                         color: appColors.white,
                         fontWeight: FontWeight.w500,

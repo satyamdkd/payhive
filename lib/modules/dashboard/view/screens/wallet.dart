@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/dashboard/view/screens/add_money.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/image_builder.dart';
@@ -193,23 +195,28 @@ class _WalletState extends State<Wallet> {
   }
 
   Widget _balanceColumn(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          color: appColors.white,
-          size: height / 20,
-        ),
-        SizedBox(height: height / 40),
-        Text(
-          label,
-          style: theme.textTheme.labelMedium?.copyWith(
+    return InkWell(
+      onTap: () {
+        Get.to(() => const AddMoney());
+      },
+      child: Column(
+        children: [
+          Icon(
+            icon,
             color: appColors.white,
-            fontWeight: FontWeight.w300,
-            fontSize: height / 32,
+            size: height / 20,
           ),
-        ),
-      ],
+          SizedBox(height: height / 40),
+          Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: appColors.white,
+              fontWeight: FontWeight.w300,
+              fontSize: height / 32,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -279,6 +286,7 @@ class _WalletState extends State<Wallet> {
                 children: [
                   Text(
                     title,
+                    
                     style: theme.textTheme.labelMedium?.copyWith(
                       color: appColors.black.withOpacity(0.8),
                       fontWeight: FontWeight.bold,

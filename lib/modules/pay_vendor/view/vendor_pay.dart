@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:payhive/modules/add_beneficiary/view/add_beneficiary.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -15,36 +17,41 @@ class VendorPaymentScreen extends StatefulWidget {
 class _VendorPaymentScreenState extends State<VendorPaymentScreen> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(height / 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: height / 20),
-          _buildHeader(),
-          SizedBox(height: height / 20),
-          _buildSearchBar(),
-          SizedBox(height: height / 20),
-          _buildActionButtons(),
-          SizedBox(height: height / 30),
-          Text(
-            "Recipient List",
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: appColors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: height / 24,
+    return Scaffold(
+      appBar: AppBar(),
+      backgroundColor: appColors.bgColorHome,
+      body: Padding(
+        padding: EdgeInsets.all(height / 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: height / 20),
+            _buildHeader(),
+            SizedBox(height: height / 20),
+            _buildSearchBar(),
+            SizedBox(height: height / 20),
+            _buildActionButtons(),
+            SizedBox(height: height / 30),
+            Text(
+              "Recipient List",
+              
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: appColors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: height / 24,
+              ),
             ),
-          ),
-          SizedBox(height: height / 40),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return _buildRecipientItem();
-              },
+            SizedBox(height: height / 40),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return _buildRecipientItem();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -177,7 +184,9 @@ class _VendorPaymentScreenState extends State<VendorPaymentScreen> {
                     passedWidth: width / 3.8,
                     title: "Transfer",
                     context: context,
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(()=> AddBeneficiary());
+                    },
                   ),
                   SizedBox(width: width / 60),
                   SizedBox(

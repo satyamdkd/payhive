@@ -3,15 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/modules/auth/salary/view/aadhar_details.dart';
-import 'package:payhive/modules/auth/salary/view/complete_your_kyc.dart';
-import 'package:payhive/modules/auth/salary/view/lets_verify_id.dart';
-import 'package:payhive/modules/auth/salary/view/pan_details.dart';
-import 'package:payhive/modules/auth/salary/view/pan_verification.dart';
-import 'package:payhive/modules/auth/salary/view/salaried.dart';
-import 'package:payhive/modules/auth/salary/view/salaried_annual_income.dart';
-import 'package:payhive/modules/auth/salary/view/user_type.dart';
-import 'package:payhive/modules/dashboard/view/dashboard.dart';
+import 'package:payhive/modules/auth/camera/face_detector_view.dart';
+import 'package:payhive/modules/auth/salary/view/annual_income.dart';
+import 'package:payhive/routes/pages.dart';
 import 'package:payhive/services/di/di.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
@@ -35,17 +29,17 @@ class _SplashState extends State<Splash> {
     Timer(const Duration(milliseconds: 2800), () async {
       var userMap = await sharedPref.getUser();
 
+      debugPrint(userMap.toString());
       if (userMap != null && userMap.toString() != "null") {
-        if (jsonDecode(userMap)['user']['id'] != null &&
-            jsonDecode(userMap)['user']['id'].toString() != "") {
-          /// Get.to(() => const Dashboard());
-
-          Get.off(() => const Salaried());
+        if (jsonDecode(userMap)['id'] != null &&
+            jsonDecode(userMap)['id'].toString() != "") {
+          Get.offAllNamed(Routes.dashboard);
         }
       } else {
-        /// Get.to(() => const Dashboard());
-
-        Get.off(() => const Salaried());
+        if (await sharedPref.getTempMobile() == null) {
+          Get.to(()=>SalariedAnnualIncome());
+         /// Get.offAllNamed(Routes.salaryReg);
+        }
       }
     });
   }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:payhive/modules/auth/salary/view/user_type.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
@@ -103,12 +101,7 @@ Container otp(BuildContext context) {
               ),
               spacing(passedHeight: height / 60),
               spacer(),
-              customButton(
-                  title: "Continue",
-                  context: context,
-                  onTap: () {
-                    Get.to(() => const UserType());
-                  }),
+              customButton(title: "Continue", context: context, onTap: () {}),
               spacing(passedHeight: height / 8),
             ],
           ),

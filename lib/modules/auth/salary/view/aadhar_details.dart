@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:payhive/modules/auth/salary/view/bank_verification.dart';
-import 'package:payhive/modules/auth/salary/view/lets_verify_id.dart';
 import 'package:payhive/utils/widgets/button.dart';
-import 'package:payhive/utils/widgets/textfield.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 
 class AadharDetails extends StatefulWidget {
-  const AadharDetails({super.key});
+   const AadharDetails({super.key, required this.aadharDetails});
+   final Map<String,dynamic> aadharDetails;
 
   @override
   State<AadharDetails> createState() => _AadharDetailsState();
@@ -25,6 +22,8 @@ class _AadharDetailsState extends State<AadharDetails> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(".\n\n\n\n\n.${widget.aadharDetails.toString()}.\n\n\n\n\n\n.");
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appColors.primaryColor,
@@ -112,32 +111,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              "Neeraj Kumar",
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                color: appColors.black.withOpacity(0.8),
-                                fontWeight: FontWeight.w300,
-                                fontSize: height / 24,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Father’s Name",
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                color: appColors.black.withOpacity(0.6),
-                                fontWeight: FontWeight.w200,
-                                fontSize: height / 26,
-                              ),
-                            ),
-                            Text(
-                              "Rajesh Kumar",
+                              widget.aadharDetails!['name'] ?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -171,7 +145,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              "Male",
+                              widget.aadharDetails!['gender']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -196,7 +170,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              "18-07-1983",
+                              widget.aadharDetails!['dateOfBirth']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -230,7 +204,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              "#1, 5th Block Jayanagar, Bangalore-560076, Karnataka",
+                              widget.aadharDetails!['address']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -248,7 +222,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                     title: "Continue",
                     context: context,
                     onTap: () {
-                      Get.to(() => const BankVerification());
+
                     }),
                 spacing(passedHeight: height / 8),
               ],

@@ -26,6 +26,7 @@ Widget customTextField({
   onChanged,
   textColor,
   bool border = true,
+  InputBorder? enabledBorder,
 }) {
   return FormField(
     validator: validator ??
@@ -39,6 +40,7 @@ Widget customTextField({
             obscureText: obscureText,
             textAlign: TextAlign.justify,
             controller: textEditingController,
+
             readOnly: readOnly,
             onChanged: onChanged,
             inputFormatters: inputFormatter,
@@ -58,37 +60,47 @@ Widget customTextField({
                 fontSize: height / 54,
                 fontWeight: FontWeight.w400,
               ),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: enabledBorder ?? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(width / 50),
                 borderSide: border
                     ? BorderSide(
-                        color: appColors.black.withOpacity(0.35),
+                        color: field.hasError
+                            ? appColors.red
+                            : appColors.black.withOpacity(0.35),
                         width: 0.6,
                       )
                     : BorderSide.none,
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder:  enabledBorder ?? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(width / 50),
                 borderSide: border
                     ? BorderSide(
-                        color: appColors.black.withOpacity(0.35),
+                        color: field.hasError
+                            ? appColors.red
+                            : appColors.black.withOpacity(0.35),
                         width: 0.6,
                       )
                     : BorderSide.none,
               ),
-              border: OutlineInputBorder(
+              border: enabledBorder ?? OutlineInputBorder(
                 borderSide: border
                     ? BorderSide(
-                        color: appColors.black.withOpacity(0.35),
+                        color: field.hasError
+                            ? appColors.red
+                            : appColors.black.withOpacity(0.35),
                         width: 0.6,
                       )
                     : BorderSide.none,
                 borderRadius: BorderRadius.circular(width / 50),
               ),
-              hintText: capitalizeFirstCharacter(fullTag ??
-                  "Please ${title.toString().contains('Upload') ? "upload" : "enter"} your ${title.toString().split(" ").first}"),
+              hintText: field.hasError
+                  ? capitalizeFirstCharacter(field.errorText!)
+                  : capitalizeFirstCharacter(fullTag ??
+                      "Please ${title.toString().contains('Upload') ? "upload" : "enter"} your ${title.toString().split(" ").first}"),
               hintStyle: theme.textTheme.bodySmall?.copyWith(
-                color: appColors.textDark.withOpacity(0.5),
+                color: field.hasError
+                    ? appColors.red
+                    : appColors.textDark.withOpacity(0.5),
                 fontSize: height / 28,
                 fontWeight: FontWeight.w400,
               ),
@@ -98,13 +110,17 @@ Widget customTextField({
               prefix: prefix,
             ),
           ),
-          if (field.hasError) SizedBox(height: height / 80),
-          if (field.hasError)
-            Text(
-              capitalizeFirstCharacter(field.errorText!),
-              textScaler: TextScaler.noScaling,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: appColors.red,
+          if (field.hasError && textEditingController.text.isNotEmpty)
+            SizedBox(height: height / 80),
+          if (field.hasError && textEditingController.text.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Text(
+                capitalizeFirstCharacter(field.errorText!),
+                
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: appColors.red,
+                ),
               ),
             ),
         ],

@@ -15,10 +15,14 @@ class AddBeneficiary extends StatefulWidget {
 class _AddBeneficiaryState extends State<AddBeneficiary> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(height / 30),
-      child: SingleChildScrollView(
-        child: fillBankDetails(context),
+    return Scaffold(
+      appBar: AppBar(),
+      backgroundColor: appColors.bgColorHome,
+      body: Padding(
+        padding: EdgeInsets.all(height / 30),
+        child: SingleChildScrollView(
+          child: fillBankDetails(context),
+        ),
       ),
     );
   }
