@@ -1,168 +1,200 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:payhive/modules/dashboard/controller/dashboard_controller.dart';
+import 'package:payhive/modules/dashboard/view/screens/home.dart';
+import 'package:payhive/modules/dashboard/view/screens/new_profile.dart';
 import 'package:payhive/modules/dashboard/view/screens/wallet.dart';
+import 'package:payhive/modules/pos/view/pos_request.dart';
+import 'package:payhive/routes/pages.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
-import 'package:payhive/utils/widgets/image_builder.dart';
 
-import 'screens/home.dart';
+import 'screens/new_add_money.dart';
 
 class Dashboard extends GetView<DashBoardController> {
   const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: appColors.bgColorHome,
-      body: GetBuilder(
-          init: controller,
-          builder: (ctx) {
-            return NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (controller.scrollController.position.pixels > 0) {
-                  controller.hideTitle.value = false;
-                } else {
-                  controller.hideTitle.value = true;
-                }
+    return GetBuilder(
+        init: controller,
+        builder: (ctx) {
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (v, t) async {
+              controller.onBackButton();
+            },
+            child: Scaffold(
+              extendBody: true,
+              backgroundColor: controller.bottomNavIndex.value == 4
+                  ? appColors.primaryColor
+                  : appColors.bgColorHome,
+              body: NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (controller.scrollController.position.pixels > 0) {
+                    controller.hideTitle.value = false;
+                  } else {
+                    controller.hideTitle.value = true;
+                  }
 
-                return true;
-              },
-              child: CustomScrollView(
-                controller: controller.scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  appBar(),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
+                  return true;
+                },
+                child: CustomScrollView(
+                  controller: controller.scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    if (controller.bottomNavIndex.value != 4) appBar(),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
                         (context, index) => body(context),
-                        childCount: 1),
-                  ),
-                ],
+                        childCount: 1,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          }),
-      bottomNavigationBar: buildNavBar(),
-    );
+              bottomNavigationBar: buildNavBar(context),
+            ),
+          );
+        });
   }
 
   Widget body(context) {
-    return Stack(
-      children: [
-        Positioned(
-          bottom: 0,
-          child: IgnorePointer(
-            ignoring: true,
-            child: Image.asset(
-              "assets/images/home_flare.png",
-              width: width,
-              height: height / 1.75,
-            ),
-          ),
-        ),
+    return GetBuilder(
+        init: controller,
+        builder: (cxt) {
+          return controller.bottomNavIndex.value == 0
+              ? Home()
+              : controller.bottomNavIndex.value == 1
+                  ? Wallet(
+                      controller: controller,
+                    )
+                  : controller.bottomNavIndex.value == 2
+                      ? const AddMoneyNew()
+                      : controller.bottomNavIndex.value == 4
+                          ? const NewProfile()
+                          : underDevelopment(context);
+        });
+  }
 
-        Container(
-          height: MediaQuery.sizeOf(context).height - height / 2.84,
-          alignment: Alignment.center,
-          child: Text(
-            "Account Set-up Completed\n\n",
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: appColors.textDark.withOpacity(0.4),
-              fontWeight: FontWeight.w300,
-              fontSize: height / 20,
-            ),
-          ),
+  Container underDevelopment(context) {
+    return Container(
+      height: MediaQuery.sizeOf(context).height - height / 2.84,
+      alignment: Alignment.center,
+      child: Text(
+        "Under Development\n\n\n",
+        style: theme.textTheme.labelMedium?.copyWith(
+          color: appColors.textDark.withValues(alpha: 0.2),
+          fontWeight: FontWeight.w800,
+          fontSize: height / 16,
         ),
-
-        /// Home(),
-      ],
+      ),
     );
   }
 
-  buildNavBar() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(23.0),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.topRight,
-          stops: const [-1, 2.0],
-          colors: [
-            appColors.primaryColor,
-            appColors.primaryLight,
-          ],
-        ),
-      ),
-      padding: EdgeInsets.only(top: height / 82),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-        child: BottomNavigationBar(
-          elevation: 10,
-          backgroundColor: Colors.white,
-          showUnselectedLabels: true,
-          selectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
-            color: appColors.textExtraLight,
-            fontSize: height / 80,
-            fontWeight: FontWeight.w500,
+  buildNavBar(context) {
+    return Obx(
+      () => Stack(
+        children: [
+          Container(
+            padding:
+                EdgeInsets.only(top: MediaQuery.sizeOf(context).height / 90),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.sizeOf(context).height / 38),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.topRight,
+                  stops: const [-1, 2.0],
+                  colors: [
+                    appColors.primaryColor,
+                    appColors.primaryLight,
+                  ],
+                ),
+              ),
+              padding:
+                  EdgeInsets.only(top: MediaQuery.sizeOf(context).height / 150),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft:
+                      Radius.circular(MediaQuery.sizeOf(context).height / 40),
+                  topRight:
+                      Radius.circular(MediaQuery.sizeOf(context).height / 40),
+                ),
+                child: BottomNavigationBar(
+                  elevation: MediaQuery.sizeOf(context).height / 200,
+                  backgroundColor: Colors.white,
+                  showUnselectedLabels: true,
+                  selectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
+                    color: appColors.textExtraLight,
+                    fontSize: MediaQuery.sizeOf(context).height / 200,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  unselectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
+                      color: appColors.textExtraLight,
+                      fontSize: MediaQuery.sizeOf(context).height / 40,
+                      fontWeight: FontWeight.w500),
+                  currentIndex: 0,
+                  type: BottomNavigationBarType.fixed,
+                  unselectedItemColor: appColors.black,
+                  selectedItemColor: appColors.black,
+                  onTap: (index) {
+                    controller.bottomNavPressed(index);
+                  },
+                  items: [
+                    BottomNavigationBarItem(
+                      label: "",
+                      icon: Image.asset(
+                        controller.bottomNavIndex.value == 0
+                            ? "assets/icons/home.png"
+                            : "assets/icons/home_grey.png",
+                        height: MediaQuery.sizeOf(context).height / 40,
+                      ),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "",
+                      icon: Image.asset(
+                        controller.bottomNavIndex.value == 1
+                            ? "assets/icons/wallet.png"
+                            : "assets/icons/wallet_grey.png",
+                        height: MediaQuery.sizeOf(context).height / 40,
+                      ),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "",
+                      icon: Image.asset(
+                        controller.bottomNavIndex.value == 2
+                            ? "assets/icons/add_button.png"
+                            : "assets/icons/add_button_grey.png",
+                        height: MediaQuery.sizeOf(context).height / 40,
+                      ),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "",
+                      icon: Image.asset(
+                        controller.bottomNavIndex.value == 3
+                            ? "assets/icons/msg_grey.png"
+                            : "assets/icons/msg_grey.png",
+                        height: MediaQuery.sizeOf(context).height / 40,
+                      ),
+                    ),
+                    BottomNavigationBarItem(
+                      label: "",
+                      icon: Image.asset(
+                        controller.bottomNavIndex.value == 4
+                            ? "assets/icons/profile_grey.png"
+                            : "assets/icons/profile_grey.png",
+                        height: MediaQuery.sizeOf(context).height / 40,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          unselectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
-              color: appColors.textExtraLight,
-              fontSize: height / 80,
-              fontWeight: FontWeight.w500),
-          currentIndex: 0,
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: appColors.black,
-          selectedItemColor: appColors.black,
-          onTap: (index) {
-            controller.bottomNavPressed(index);
-          },
-          items: [
-            BottomNavigationBarItem(
-              label: "",
-              icon: Image.asset(
-                "assets/icons/home_grey.png",
-                height: height / 19,
-                color: appColors.black.withOpacity(0.5),
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "",
-              icon: Image.asset(
-                "assets/icons/wallet_grey.png",
-                height: height / 19,
-                color: appColors.black.withOpacity(0.5),
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "",
-              icon: Image.asset(
-                "assets/icons/add_button.png",
-                height: height / 19,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "",
-              icon: Image.asset(
-                "assets/icons/msg_grey.png",
-                height: height / 19,
-                color: appColors.black.withOpacity(0.5),
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: "",
-              icon: Image.asset(
-                "assets/icons/profile_grey.png",
-                height: height / 19,
-                color: appColors.black.withOpacity(0.5),
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -176,50 +208,7 @@ class Dashboard extends GetView<DashBoardController> {
       pinned: true,
       forceElevated: true,
       stretch: true,
-      title: Obx(
-        () => !controller.hideTitle.value
-            ? Padding(
-                padding: EdgeInsets.only(
-                  bottom: width / 30,
-                  right: width / 30,
-                ),
-                child: Row(
-                  children: [
-                    Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1000.0),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: appColors.white,
-                          borderRadius: BorderRadius.circular(1000.0),
-                        ),
-                        padding: const EdgeInsets.all(5),
-                        child: SizedBox(
-                          height: height / 14,
-                          width: height / 14,
-                          child: Image.asset(
-                            "assets/icons/logo.png",
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ).animate().fade(duration: 200.ms).scale(delay: 200.ms),
-                    SizedBox(width: width / 60),
-                    Text(
-                      "Pay Hive",
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        color: appColors.white,
-                        fontWeight: FontWeight.w300,
-                        fontSize: height / 22,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const SizedBox(),
-      ),
+      title: null,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           fit: StackFit.expand,
@@ -231,9 +220,9 @@ class Dashboard extends GetView<DashBoardController> {
             ),
             Container(
               margin: EdgeInsets.only(
-                left: width / 30,
+                left: height / 30,
                 bottom: width / 30,
-                right: width / 30,
+                right: height / 30,
               ),
               alignment: Alignment.bottomLeft,
               child: Row(
@@ -242,24 +231,62 @@ class Dashboard extends GetView<DashBoardController> {
                 children: [
                   Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child: imageBuilder(
-                          'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg',
-                          height: height / 8,
-                          width: height / 8,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      SizedBox(width: width / 30),
-                      Text(
-                        "Hi, Neeraj Kumar",
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: appColors.white,
-                          fontWeight: FontWeight.w300,
-                          fontSize: height / 24,
-                        ),
-                      ),
+                      controller.bottomNavIndex.value == 1 ||
+                              controller.bottomNavIndex.value == 2
+                          ? Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: SizedBox(
+                                height: height / 14,
+                                width: height / 14,
+                                child: Image.asset(
+                                  "assets/icons/wallet_grey1.png",
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            )
+                          : Card(
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(1000.0),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: appColors.white,
+                                  borderRadius: BorderRadius.circular(1000.0),
+                                ),
+                                padding: const EdgeInsets.all(5),
+                                child: SizedBox(
+                                  height: height / 14,
+                                  width: height / 14,
+                                  child: Image.asset(
+                                    "assets/icons/logo.png",
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                      SizedBox(width: width / 40),
+                      controller.bottomNavIndex.value == 0
+                          ? Text(
+                              "Hi, ${"${controller.userDetails?['data']['name'] ?? ''}".split(' ').first}",
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: appColors.white,
+                                fontWeight: FontWeight.w300,
+                                fontSize: height / 24,
+                              ),
+                            )
+                          : Text(
+                              controller.bottomNavIndex.value == 1
+                                  ? "Wallet"
+                                  : controller.bottomNavIndex.value == 2
+                                      ? "Add Money"
+                                      : "",
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: appColors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: height / 24,
+                              ),
+                            ),
                     ],
                   ),
                   Row(
@@ -293,12 +320,3 @@ class Dashboard extends GetView<DashBoardController> {
     );
   }
 }
-
-///        Positioned(
-///           bottom: height / 9,
-///           child: Image.asset(
-///             "assets/icons/bottom_nav_selected.png",
-///             width: 30,
-///             height: 30,
-///           ),
-///         ),

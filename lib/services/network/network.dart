@@ -82,6 +82,28 @@ class Network {
     }
   }
 
+
+  Future<ApiResults> postDataWithJson({
+    dynamic data,
+    required String endPoint,
+  }) async {
+    try {
+      final response = await _dio.post(
+        endPoint,
+        data: json.encode(data ?? {}),
+      );
+      return returnResponse(response);
+    } on SocketException {
+      return ApiFailure('Socket Exception');
+    } on FormatException {
+      return ApiFailure('Format Exception');
+    } on network.DioException catch (e) {
+      return _handleDioError(e);
+    } catch (e) {
+      return ApiFailure('Unexpected Error');
+    }
+  }
+
   postDataWithFilesNew(
       {Map<String, dynamic>? data,
       required String endPoint,

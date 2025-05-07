@@ -1,43 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/modules/add_beneficiary/view/add_beneficiary.dart';
-import 'package:payhive/modules/pay_vendor/view/vendor_pay.dart';
+import 'package:lottie/lottie.dart';
+import 'package:payhive/modules/wallet_history/controller/wallet_history_controller.dart';
+import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 
-class WalletScreen extends StatefulWidget {
-  const WalletScreen({super.key});
-
-  @override
-  State<WalletScreen> createState() => _WalletScreenState();
-}
-
-class _WalletScreenState extends State<WalletScreen> {
-  double height = 0;
-
-  double width = 0;
+class WalletHistoryScreen extends GetView<WalletHistoryController> {
+  const WalletHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.sizeOf(context).height;
-    width = MediaQuery.sizeOf(context).width;
+    controller.height = MediaQuery.sizeOf(context).height;
+    controller.width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: AppBar(),
       backgroundColor: appColors.bgColorHome,
-      body: Column(
+      body: CustomScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        slivers: [
+          appBar(),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => GetBuilder(
+                  init: controller,
+                  builder: (ctx) {
+                    return controller.walletHistoryLoading.value
+                        ? Container(
+                            height: controller.height - 100,
+                            width: controller.width,
+                            alignment: Alignment.center,
+                            child: Lottie.asset(
+                              'assets/lottie/wave_loading.json',
+                              height: controller.height / 6.5,
+                            ),
+                          )
+                        : body(context);
+                  }),
+              childCount: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget body(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        controller.walletHistory();
+      },
+      child: ListView(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
         children: [
           _buildBalanceCard(),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: height / 50),
+            margin: EdgeInsets.symmetric(horizontal: controller.height / 50),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(height / 60),
-              boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
+              borderRadius: BorderRadius.circular(controller.height / 60),
+              boxShadow: const [
+                BoxShadow(color: Colors.black12, blurRadius: 5)
+              ],
             ),
             child: Column(
               children: [
                 _buildTabBar(),
-                _buildTransactionList(),
+                if (controller.walletHistoryRes != null &&
+                    controller.walletHistoryRes?['data'] != [])
+                  _buildTransactionList(),
               ],
             ),
           ),
@@ -48,70 +79,69 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Widget _buildBalanceCard() {
     return Container(
-      margin: EdgeInsets.all(height / 50),
-      padding: EdgeInsets.all(height / 50),
+      margin: EdgeInsets.all(controller.height / 50),
+      padding: EdgeInsets.all(controller.height / 50),
       decoration: BoxDecoration(
-        color: const Color(0xffDCFFE1),
-        borderRadius: BorderRadius.circular(height / 40),
+        color: appColors.primaryColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(controller.height / 60),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            "assets/images/wallet.png",
-            width: height / 20,
+            "assets/images/wallet_svgrepo.com.png",
+            width: controller.height / 20,
           ),
           const SizedBox(height: 10),
           Text(
             "Total Balance",
-            
             style: theme.textTheme.labelMedium?.copyWith(
               color: appColors.textDark,
               fontWeight: FontWeight.w700,
-              fontSize: height / 46,
+              fontSize: controller.height / 46,
             ),
           ),
           Text(
-            "₹0.00",
-            
+            "₹${controller.walletHistoryRes?['availableBalance']}",
             style: theme.textTheme.labelMedium?.copyWith(
               color: appColors.primaryLight,
               fontWeight: FontWeight.w700,
-              fontSize: height / 32,
+              fontSize: controller.height / 32,
             ),
           ),
-          SizedBox(height: height / 60),
+          SizedBox(height: controller.height / 60),
           Image.asset(
             "assets/images/large_line.png",
-            width: width / 2,
+            width: controller.width / 2,
           ),
-          SizedBox(height: height / 60),
+          SizedBox(height: controller.height / 60),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _balanceColumn("₹0.00", "Main Balance"),
               Image.asset(
                 "assets/images/small_line.png",
-                height: height / 20,
+                height: controller.height / 20,
               ),
               _balanceColumn("₹0.00", "Unsettled Balance"),
               Image.asset(
                 "assets/images/small_line.png",
-                height: height / 20,
+                height: controller.height / 20,
               ),
               _balanceColumn("₹0.00", "Rewards/Cashback"),
             ],
           ),
-          SizedBox(height: height / 60),
+          SizedBox(height: controller.height / 60),
           Text(
-            'For any refunds please email us on support @abc.com',
+            'For any refunds related queries please email us on support@paylix.in',
+            textAlign: TextAlign.center,
             style: theme.textTheme.labelMedium?.copyWith(
-              color: appColors.black.withOpacity(0.6),
+              color: appColors.black.withValues(alpha: 0.6),
               fontWeight: FontWeight.w400,
-              fontSize: height / 64,
+              fontSize: controller.height / 74,
             ),
           ),
-          SizedBox(height: height / 60),
+          SizedBox(height: controller.height / 100),
         ],
       ),
     );
@@ -123,17 +153,17 @@ class _WalletScreenState extends State<WalletScreen> {
         Text(
           amount,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: appColors.black.withOpacity(0.8),
+            color: appColors.black.withValues(alpha: 0.8),
             fontWeight: FontWeight.bold,
-            fontSize: height / 58,
+            fontSize: controller.height / 58,
           ),
         ),
         Text(
           label,
           style: theme.textTheme.labelMedium?.copyWith(
-            color: appColors.black.withOpacity(0.4),
+            color: appColors.black.withValues(alpha: 0.4),
             fontWeight: FontWeight.w300,
-            fontSize: height / 70,
+            fontSize: controller.height / 70,
           ),
         ),
       ],
@@ -160,7 +190,8 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Widget _tabButton(String title, bool isSelected) {
     return Container(
-      margin: EdgeInsets.only(right: width / 20, bottom: height / 80),
+      margin: EdgeInsets.only(
+          right: controller.width / 20, bottom: controller.height / 80),
       child: Column(
         children: [
           TextButton(
@@ -170,7 +201,7 @@ class _WalletScreenState extends State<WalletScreen> {
               style: theme.textTheme.labelMedium?.copyWith(
                 color: isSelected ? appColors.primaryLight : appColors.black,
                 fontWeight: FontWeight.w700,
-                fontSize: height / 64,
+                fontSize: controller.height / 64,
               ),
             ),
           ),
@@ -178,7 +209,7 @@ class _WalletScreenState extends State<WalletScreen> {
             IntrinsicWidth(
               child: Container(
                 height: 3,
-                width: width / 4,
+                width: controller.width / 4,
                 color: appColors.primaryLight,
               ),
             )
@@ -189,23 +220,25 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Widget _buildTransactionList() {
     return SizedBox(
-      height: height / 2.8,
+      height: controller.height / 2.5,
       child: ListView.builder(
-        itemCount: 3,
+        padding: EdgeInsets.zero,
+        itemCount: controller.walletHistoryRes?['data'].length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return InkWell(
-              onTap: (){
-                Get.to(()=> VendorPaymentScreen());
-              },
-              child: _transactionItem());
+          return InkWell(onTap: () {}, child: _transactionItem(index));
         },
       ),
     );
   }
 
-  Widget _transactionItem() {
-    return Container(
+  Widget _transactionItem(int ind) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      height:
+          controller.selectedIndex == ind && controller.moreInfoClicked.value
+              ? height / 2.4
+              : height / 3.9,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -220,19 +253,22 @@ class _WalletScreenState extends State<WalletScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Transaction ID: PL000005",
+                "Transaction ID: ${controller.walletHistoryRes?['data'][ind]['transactionid']}",
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: appColors.black,
                   fontWeight: FontWeight.w300,
-                  fontSize: height / 70,
+                  fontSize: controller.height / 70,
                 ),
               ),
               Text(
-                "+36,000",
+                "${controller.walletHistoryRes?['data'][ind]['type'] == 'Debit' ? '-' : "+"}₹${double.parse(controller.walletHistoryRes?['data'][ind]['balance_amt']).toStringAsFixed(2)}",
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.green,
+                  color: controller.walletHistoryRes?['data'][ind]['type'] ==
+                          'Debit'
+                      ? Colors.red
+                      : appColors.green,
                   fontWeight: FontWeight.bold,
-                  fontSize: height / 64,
+                  fontSize: controller.height / 64,
                 ),
               ),
             ],
@@ -241,21 +277,21 @@ class _WalletScreenState extends State<WalletScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Wallet Top Up Instant",
+                "${controller.walletHistoryRes?['data'][ind]['text']}",
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: appColors.black,
                   fontWeight: FontWeight.w700,
-                  fontSize: height / 68,
+                  fontSize: controller.height / 68,
                 ),
               ),
-              Text(
-                "Final: ₹35,363.8",
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.black.withOpacity(0.6),
-                  fontWeight: FontWeight.w400,
-                  fontSize: height / 70,
-                ),
-              ),
+              // Text(
+              //   "Final: ₹35,363.8",
+              //   style: theme.textTheme.labelMedium?.copyWith(
+              //     color: appColors.black.withValues(alpha: 0.6),
+              //     fontWeight: FontWeight.w400,
+              //     fontSize: controller.height / 70,
+              //   ),
+              // ),
             ],
           ),
           Row(
@@ -265,19 +301,19 @@ class _WalletScreenState extends State<WalletScreen> {
               Row(
                 children: [
                   Text(
-                    "Utilities ",
+                    "${controller.walletHistoryRes?['data'][ind]['razorpay_category'] ?? ""}",
                     style: theme.textTheme.labelMedium?.copyWith(
                       color: appColors.primaryLight,
                       fontWeight: FontWeight.w400,
-                      fontSize: height / 68,
+                      fontSize: controller.height / 68,
                     ),
                   ),
                   Text(
-                    " Instant",
+                    " ${controller.walletHistoryRes?['data'][ind]['razorpay_settlement'] ?? ""}",
                     style: theme.textTheme.labelMedium?.copyWith(
                       color: appColors.green,
                       fontWeight: FontWeight.w400,
-                      fontSize: height / 68,
+                      fontSize: controller.height / 68,
                     ),
                   ),
                 ],
@@ -287,7 +323,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: appColors.green,
                   fontWeight: FontWeight.w500,
-                  fontSize: height / 68,
+                  fontSize: controller.height / 68,
                 ),
               ),
             ],
@@ -296,24 +332,132 @@ class _WalletScreenState extends State<WalletScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "23-Feb-2025  04:11:45 PM",
+                controller.walletHistoryRes?['data'][ind]['datetime'],
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.black.withOpacity(0.6),
+                  color: appColors.black.withValues(alpha: 0.6),
                   fontWeight: FontWeight.w400,
-                  fontSize: height / 68,
+                  fontSize: controller.height / 68,
                 ),
               ),
-              Text(
-                "More Information",
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.green,
-                  fontWeight: FontWeight.w400,
-                  fontSize: height / 68,
+              InkWell(
+                onTap: () {
+                  controller.selectedIndex = ind;
+                  controller.moreInfoClicked.value =
+                      !controller.moreInfoClicked.value;
+                  controller.update();
+                },
+                child: Text(
+                  "More Information",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.green,
+                    fontWeight: FontWeight.w400,
+                    fontSize: controller.height / 68,
+                  ),
                 ),
               ),
             ],
           ),
+          if (controller.selectedIndex == ind &&
+              controller.moreInfoClicked.value)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: height / 60),
+                Divider(color: appColors.grey),
+                SizedBox(height: height / 80),
+                Text(
+                  'Concerned Person',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w400,
+                    fontSize: controller.height / 68,
+                  ),
+                ),
+                Text(
+                  'Name : ${controller.walletHistoryRes?['data'][ind]['personname']}',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w400,
+                    fontSize: controller.height / 68,
+                  ),
+                ),
+                Text(
+                  'Email : ${controller.walletHistoryRes?['data'][ind]['personemail']}',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w400,
+                    fontSize: controller.height / 68,
+                  ),
+                ),
+              ],
+            ),
         ],
+      ),
+    );
+  }
+
+  GestureDetector backButton() {
+    return GestureDetector(
+      onTap: () {
+        Get.back();
+      },
+      child: Row(
+        children: [
+          Icon(
+            Icons.arrow_back_ios_rounded,
+            size: controller.height / 32,
+            color: appColors.primaryExtraLight,
+          ),
+          SizedBox(width: controller.width / 80),
+          Text(
+            "Transaction History",
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: appColors.white,
+              fontWeight: FontWeight.w200,
+              fontSize: controller.height / 40,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SliverAppBar appBar() {
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: appColors.primaryColor,
+      expandedHeight: controller.height / 12.6,
+      floating: false,
+      pinned: true,
+      forceElevated: true,
+      stretch: true,
+      title: null,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(color: appColors.primaryColor),
+            Image.asset(
+              'assets/images/flare_two.png',
+              fit: BoxFit.fitHeight,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: controller.width / 40,
+                bottom: controller.width / 24,
+                right: controller.width / 40,
+              ),
+              alignment: Alignment.bottomLeft,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  backButton(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

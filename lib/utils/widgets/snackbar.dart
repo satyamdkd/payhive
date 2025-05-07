@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payhive/utils/helper/text_capitalization.dart';
@@ -9,7 +8,8 @@ String removeWord(String input, String wordToRemove) {
   return input.replaceAll(wordToRemove, '').trim();
 }
 
-showSnackBar({title, required message, color, Duration? duration}) {
+showSnackBar(
+    {title, required message, color, Duration? duration, double? bottom}) {
   var mes = message.toString().toUpperCase().contains("STATUS 0,")
       ? message.toString().toUpperCase().split("STATUS 0,")[1].trim()
       : message;
@@ -38,67 +38,53 @@ showSnackBar({title, required message, color, Duration? duration}) {
   return Get.snackbar(
     "",
     capitalizeFirstCharacter(mes),
-    borderRadius: 4,
+    borderRadius: 16,
     margin: EdgeInsets.only(
-      bottom: width / 20,
+      top: bottom ?? height / 1.2,
       left: width / 40,
       right: width / 40,
     ),
-    borderColor: appColors.white,
-    borderWidth: 1,
     padding: EdgeInsets.only(bottom: height / 16),
-    snackPosition: SnackPosition.BOTTOM,
-    duration: duration ?? const Duration(seconds: 4),
-    backgroundColor: color ?? appColors.primaryColor.withOpacity(0.7),
+    snackPosition: SnackPosition.TOP,
+    duration: duration ?? const Duration(seconds: 1),
+    backgroundColor: color ?? appColors.primaryColor,
     titleText: null,
     messageText: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: width / 80, vertical: width / 120),
-          margin: EdgeInsets.symmetric(horizontal: width / 40),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: appColors.white,
-          ),
-          child: Image.asset(
-            "assets/icons/logo.png",
-            height: height / 20,
-            width: height / 20,
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              title ?? "PayHive",
-              
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: appColors.white,
-                fontSize: height / 32,
-                fontFamily: "Inter",
-                letterSpacing: 1,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            SizedBox(
-              width: width / 1.4,
-              child: Text(
-                "${capitalizeFirstCharacter(mes)}",
-                
-                maxLines: null,
-                style: theme.textTheme.bodyMedium?.copyWith(
+        Padding(
+          padding: EdgeInsets.only(
+              left: height / 20.0, right: height / 20.0, bottom: height / 50.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                title ?? "PayLix",
+                style: theme.textTheme.bodyLarge?.copyWith(
                   color: appColors.white,
-                  fontSize: height / 40,
+                  fontSize: height / 32,
                   fontFamily: "Inter",
                   letterSpacing: 1,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: width / 1.4,
+                child: Text(
+                  "$mes",
+                  maxLines: null,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: appColors.white,
+                    fontSize: height / 40,
+                    fontFamily: "Inter",
+                    letterSpacing: 1,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     ),

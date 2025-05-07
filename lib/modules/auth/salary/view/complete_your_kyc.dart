@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payhive/modules/auth/salary/view/pan_verify_salary.dart';
@@ -41,7 +42,7 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(
-        top: width / 20,
+        top: width / 40,
         left: width / 18,
         right: width / 20,
       ),
@@ -64,30 +65,48 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    spacing(passedHeight: height / 10),
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        margin:
+                            EdgeInsets.only(top: height / 20, left: width / 30),
+                        child: Icon(
+                          CupertinoIcons.back,
+                          color: appColors.primaryColor,
+                          size: height / 10,
+                        ),
+                      ),
+                    ),
                     text(),
                     spacing(passedHeight: height / 60),
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(left: width / 16),
                       child: Text(
-                        "Complete your KYC to unlock secured and seamless transactions of Pay Hive",
+                        "Complete your KYC to unlock secured and seamless transactions of PayLix",
                         style: theme.textTheme.labelLarge?.copyWith(
                           color: appColors.textDark,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    spacing(passedHeight: height / 10),
-                    SizedBox(
+                    spacing(passedHeight: height / 12),
+                    Container(
+                      padding: EdgeInsets.all(height / 10),
+                      decoration: BoxDecoration(
+                          color: appColors.primaryExtraLight,
+                          borderRadius: BorderRadius.circular(20)),
                       height: height / 1,
-                      width: width,
+                      width: width / 1.1,
                       child: Image.asset(
-                        "assets/images/com_ur_kyc.png",
+                        "assets/images/complete_kyc.png",
                         fit: BoxFit.fitHeight,
                       ),
                     ),
-                    spacing(passedHeight: height / 5),
+                    spacing(passedHeight: height / 10),
                     Padding(
                       padding: EdgeInsets.only(
                           left: width / 20.0, right: width / 20.0),
@@ -194,7 +213,6 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
                   children: [
                     Text(
                       title,
-                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w500,
@@ -204,7 +222,6 @@ class _CompleteYourKYCState extends State<CompleteYourKYC> {
                     ),
                     Text(
                       subtitle,
-                      
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: appColors.textDark,
                         fontWeight: FontWeight.w400,

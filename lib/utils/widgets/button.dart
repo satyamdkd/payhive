@@ -8,8 +8,10 @@ Widget customButton(
     bool loading = false,
     textColor,
     double? passedHeight,
-    double? passedWidth,
+      BoxBorder? border,
+    double? passedWidth,BorderRadiusGeometry? borderRadius,
     List<Color>? gradColor,
+      TextStyle? style,
     void Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
@@ -18,7 +20,7 @@ Widget customButton(
       width: passedWidth ?? MediaQuery.sizeOf(context).width,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(height / 40.0),
+        borderRadius: borderRadius ?? BorderRadius.circular(height / 40.0),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.topRight,
@@ -29,11 +31,11 @@ Widget customButton(
                 appColors.primaryColor,
               ],
         ),
+        border:border
       ),
       child: Text(
         title,
-        
-        style: theme.textTheme.labelLarge?.copyWith(
+        style: style ?? theme.textTheme.labelLarge?.copyWith(
           color: appColors.white,
           fontSize: passedHeight != null ? passedHeight / 2.8 : height / 28,
           fontWeight: FontWeight.w300,

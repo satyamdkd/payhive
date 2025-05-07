@@ -111,7 +111,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              widget.aadharDetails!['name'] ?? '',
+                              widget.aadharDetails['name'] ?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -145,7 +145,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              widget.aadharDetails!['gender']?? '',
+                              widget.aadharDetails['gender']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -170,7 +170,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              widget.aadharDetails!['dateOfBirth']?? '',
+                              widget.aadharDetails['dateOfBirth']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,
@@ -204,7 +204,7 @@ class _AadharDetailsState extends State<AadharDetails> {
                               ),
                             ),
                             Text(
-                              widget.aadharDetails!['address']?? '',
+                              widget.aadharDetails['address']?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
                                 fontWeight: FontWeight.w300,

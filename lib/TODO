@@ -1,0 +1,499 @@
+
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   Get.snackbar(
+    //     "",
+    //     "Please add your bank",
+    //     borderRadius: 16,
+    //     margin: EdgeInsets.only(
+    //       bottom: width / 40,
+    //       left: width / 40,
+    //       right: width / 40,
+    //     ),
+    //     padding: EdgeInsets.only(bottom: height / 16),
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     duration: const Duration(seconds: 3600),
+    //     backgroundColor: appColors.primaryColor,
+    //     titleText: null,
+    //     isDismissible: false,
+    //     messageText: Row(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         Padding(
+    //           padding: EdgeInsets.only(
+    //               left: height / 20.0,
+    //               right: height / 20.0,
+    //               bottom: height / 50.0),
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: [
+    //               Text(
+    //                 "Bank KYC",
+    //                 style: theme.textTheme.bodyLarge?.copyWith(
+    //                   color: appColors.white,
+    //                   fontSize: height / 32,
+    //                   letterSpacing: 1,
+    //                   fontWeight: FontWeight.w700,
+    //                 ),
+    //               ),
+    //               SizedBox(
+    //                 width: width / 1.6,
+    //                 child: Text(
+    //                   "Your bank KYC is pending, please add one to complete the account setup.",
+    //                   maxLines: null,
+    //                   style: theme.textTheme.bodyMedium?.copyWith(
+    //                     color: appColors.white,
+    //                     fontSize: height / 40,
+    //                     letterSpacing: 1,
+    //                     fontWeight: FontWeight.w500,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         TextButton(
+    //             onPressed: () {
+    //               Get.closeAllSnackbars();
+    //               Get.toNamed(Routes.bankDetail);
+    //             },
+    //             child: Container(
+    //               width: width / 7,
+    //               height: height / 16,
+    //               alignment: Alignment.center,
+    //               decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(height / 60.0),
+    //                 gradient: LinearGradient(
+    //                   begin: Alignment.topLeft,
+    //                   end: Alignment.topRight,
+    //                   stops: const [-1, 2.0],
+    //                   colors: [
+    //                     appColors.primaryExtraLight,
+    //                     appColors.primaryLight,
+    //                   ],
+    //                 ),
+    //               ),
+    //               child: Text(
+    //                 "Add",
+    //                 style: theme.textTheme.labelLarge?.copyWith(
+    //                   color: appColors.white,
+    //                   fontSize: height / 36,
+    //                   fontWeight: FontWeight.w400,
+    //                 ),
+    //               ),
+    //             ))
+    //       ],
+    //     ),
+    //   );
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    import 'package:flutter/material.dart';
+    import 'package:get/get.dart';
+    import 'package:payhive/modules/dashboard/controller/dashboard_controller.dart';
+    import 'package:payhive/trash_code/aadhar_otp.dart';
+    import 'package:payhive/utils/screen_size.dart';
+    import 'package:payhive/utils/theme/apptheme.dart';
+    import 'package:payhive/utils/widgets/textfield.dart';
+
+    import '../../../../utils/widgets/image_builder.dart';
+
+    class Profile extends GetView<DashBoardController> {
+      const Profile({super.key});
+
+      @override
+      Widget build(BuildContext context) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: height / 1.8,
+              padding: EdgeInsets.all(width / 20),
+              decoration: BoxDecoration(
+                color: appColors.white,
+                image: const DecorationImage(
+                  image: AssetImage("assets/images/splash_bg.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: height / 16),
+                    child: CircleAvatar(
+                      radius: height / 9,
+                      foregroundImage: const NetworkImage(
+                          'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg'),
+                    ),
+                  ),
+                  SizedBox(width: width / 30),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Satyam patel',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: appColors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: height / 24,
+                        ),
+                      ),
+                      Text(
+                        '+91 7011005499',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: appColors.white,
+                          fontWeight: FontWeight.w300,
+                          fontSize: height / 30,
+                        ),
+                      ),
+                      Text(
+                        'patelsatyam267@gmail.com',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: appColors.white,
+                          fontWeight: FontWeight.w300,
+                          fontSize: height / 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(height / 30),
+                  child: imageBuilder(
+                    'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg',
+                    height: height / 7,
+                    width: height / 7,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: width / 30),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Satyam patel',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: appColors.textDark,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                        fontSize: height / 18,
+                      ),
+                    ),
+                    Text(
+                      '+91 7011005499',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: appColors.black.withOpacity(0.6),
+                        fontWeight: FontWeight.w400,
+                        fontSize: height / 24,
+                      ),
+                    ),
+                  ],
+                ),
+                spacer(),
+                Text(
+                  'Manage',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.primaryColor,
+                    fontWeight: FontWeight.w800,
+                    fontSize: height / 24,
+                  ),
+                ),
+                SizedBox(width: width / 30),
+              ],
+            ),
+
+            SizedBox(height: height / 20),
+
+            /// completeYourKYC(),
+
+            Divider(
+              thickness: 1,
+              color: appColors.grey,
+            ),
+            const SizedBox(height: 16),
+
+            const Text(
+              'Get Started',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildListTile('QR codes & UPI IDs', Icons.qr_code),
+            _buildListTile('Manage payments', Icons.payment),
+            const SizedBox(height: 24),
+
+            // Preferences Section
+            const Text(
+              'PREFERENCES',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildListTile('Languages', Icons.language),
+            _buildListTile('Bill notifications', Icons.notifications),
+            _buildListTile('Permissions', Icons.security),
+            _buildListTile('Theme', Icons.color_lens),
+            _buildListTile('Reminders', Icons.alarm),
+          ],
+        );
+      }
+
+      Container completeYourKYC() {
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: appColors.primaryColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Complete your profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Get a personalised experience and easy setup across PayLix\'s offerings',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                width: width / 2.8,
+                height: height / 12,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(height / 60.0),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.topRight,
+                    stops: const [-1, 2.0],
+                    colors: [
+                      appColors.primaryExtraLight,
+                      appColors.primaryLight,
+                    ],
+                  ),
+                ),
+                child: Text(
+                  "COMPLETE NOW",
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: appColors.white,
+                    fontSize: height / 36,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      Widget _buildListTile(String title, IconData icon) {
+        return Column(
+          children: [
+            ListTile(
+              leading: Icon(icon, color: const Color(0xFF512DA8)),
+              title: Text(title),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {},
+            ),
+            const Divider(height: 1, indent: 56),
+          ],
+        );
+      }
+    }
+
+
+
+
+
+/// ==============================
+
+
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:map_location_picker/map_location_picker.dart';
+import 'package:payhive/constants/urls.dart';
+import 'package:payhive/utils/screen_size.dart';
+import 'package:payhive/utils/widgets/button.dart';
+import '../../../utils/theme/apptheme.dart';
+import '../controller/address_controller.dart';
+
+class LocationPickerPage extends StatelessWidget {
+  final AddressController controller = Get.find<AddressController>();
+
+  LocationPickerPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: appColors.bgColorHome,
+      body: Stack(
+        children: [
+          MapLocationPicker(
+            apiKey: URLs.googleAPIKEY,
+            region: 'in',
+            trafficEnabled: false,
+            mapType: MapType.normal,
+            onCameraIdle: () {},
+            buildingsEnabled: false,
+            onDecodeAddress: (result) async {
+              controller.latitude.text =
+                  result!.geometry.location.lat.toString();
+              controller.longitude.text =
+                  result.geometry.location.lng.toString();
+            },
+            currentLatLng:
+                LatLng(controller.currentLat, controller.currentLong),
+            hideBackButton: true,
+            hideMapTypeButton: true,
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "YOUR CURRENTLY SELECTED ADDRESS",
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: height / 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: appColors.primaryLight,
+                            size: height / 18,
+                          ),
+                          Text("Block R",
+                              style: TextStyle(
+                                  fontSize: height / 18,
+                                  fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                      Text("CHANGE",
+                          style: TextStyle(
+                              color: appColors.primaryLight,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+
+                  Padding(
+                    padding:  EdgeInsets.only(left: width/17),
+                    child: Text("Prem Nagar I, Prem Nagar, New Delhi,Nagar I, Prem Nagar, New Delhi"),
+                  ),
+
+
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.yellow[100],
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                        "The address is 338 m away from your current location"),
+                  ),
+                  customButton(
+                      title: 'Add more address details', context: context),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/// ------------------------------------------------------------------------------------------------
+
+                    Container(
+                      height: height / 6,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(height / 40.0),
+                        ),
+                        color: appColors.bgColorHome.withOpacity(0.5),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.cloud_upload_rounded,
+                            size: height / 12,
+                            color: appColors.grey,
+                          ),
+                          SizedBox(width: width / 30),
+                          Text(
+                            'UPLOAD YOUR SLIP',
+                            style: context.textTheme.bodySmall!.copyWith(
+                              fontSize: height / 30,
+                              letterSpacing: 3.5,
+                              color: appColors.grey,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+
+/// ------------------------------------------------------------------------------------------------

@@ -23,6 +23,7 @@ class ThemeHelper {
           fontFamily: "Asap",
         ),
       ),
+
       inputDecorationTheme: const InputDecorationTheme(
         focusedBorder: InputBorder.none,
         enabledBorder: InputBorder.none,

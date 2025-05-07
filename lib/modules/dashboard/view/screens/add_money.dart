@@ -40,7 +40,7 @@ class _AddMoneyState extends State<AddMoney> {
                   left: width / 30.0, right: width / 30.0, bottom: height / 30),
               child: customButton(
                   title: "Add Money", context: context, onTap: () {
-                    Get.to(()=> WalletScreen());
+                    Get.to(()=> WalletHistoryScreen());
               }),
             ),
             SizedBox(height: height / 8),

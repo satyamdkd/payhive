@@ -1,12 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/modules/dashboard/view/screens/add_money.dart';
+import 'package:lottie/lottie.dart';
+import 'package:payhive/modules/dashboard/controller/dashboard_controller.dart';
+import 'package:payhive/routes/pages.dart';
+import 'package:payhive/utils/helper/date_time.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/image_builder.dart';
 
 class Wallet extends StatefulWidget {
-  const Wallet({super.key});
+  const Wallet({super.key, required this.controller});
+
+  final DashBoardController controller;
 
   @override
   State<Wallet> createState() => _WalletState();
@@ -15,13 +21,29 @@ class Wallet extends StatefulWidget {
 class _WalletState extends State<Wallet> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildBalanceCard(),
-        _buildContactsList(),
-        _buildTransactionsSection(),
-      ],
-    );
+    debugPrint(widget.controller.walletAmount.value.toString());
+
+    return GetBuilder(
+        init: widget.controller,
+        builder: (ctx) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              widget.controller.dashboardApi();
+              widget.controller.walletHistory();
+            },
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: [
+                _buildBalanceCard(),
+                _buildContactsList(),
+                if (widget.controller.walletHistoryRes != null &&
+                    widget.controller.walletHistoryRes?['data'] != [])
+                  _buildTransactionsSection(),
+              ],
+            ),
+          );
+        });
   }
 
   Widget _buildContactsList() {
@@ -46,18 +68,9 @@ class _WalletState extends State<Wallet> {
         "icon":
             "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
       },
-      {
-        "name": "Mark",
-        "icon":
-            "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
-      },
     ];
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(height / 30),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
-      ),
+      alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(
           left: height / 30, right: height / 30, top: height / 30),
       child: SingleChildScrollView(
@@ -72,12 +85,12 @@ class _WalletState extends State<Wallet> {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      radius: height / 13,
+                      radius: height / 15,
                       backgroundColor: appColors.primaryExtraLight,
                       child: Icon(
-                        Icons.add,
-                        size: height / 18,
-                        color: Colors.black,
+                        CupertinoIcons.add,
+                        size: height / 16,
+                        color: appColors.primaryColor,
                       ),
                     ),
                     SizedBox(height: height / 40),
@@ -85,8 +98,8 @@ class _WalletState extends State<Wallet> {
                       "Add",
                       style: theme.textTheme.labelMedium?.copyWith(
                         color: appColors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: height / 30,
+                        fontWeight: FontWeight.w500,
+                        fontSize: height / 32,
                       ),
                     ),
                   ],
@@ -105,8 +118,8 @@ class _WalletState extends State<Wallet> {
                           borderRadius: BorderRadius.circular(1000),
                           child: imageBuilder(
                             contact['icon'],
-                            height: height / 6.6,
-                            width: height / 6.5,
+                            height: height / 7.6,
+                            width: height / 7.5,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -115,8 +128,8 @@ class _WalletState extends State<Wallet> {
                           contact['name'],
                           style: theme.textTheme.labelMedium?.copyWith(
                             color: appColors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: height / 30,
+                            fontWeight: FontWeight.w500,
+                            fontSize: height / 32,
                           ),
                         ),
                       ],
@@ -133,13 +146,19 @@ class _WalletState extends State<Wallet> {
 
   Widget _buildBalanceCard() {
     return Container(
+      width: width,
+      height: height / 2.7,
       margin: EdgeInsets.only(
-          left: height / 30, right: height / 30, top: height / 30),
+        left: height / 30,
+        right: height / 30,
+        top: height / 30,
+      ),
       padding: EdgeInsets.all(height / 30),
       decoration: BoxDecoration(
+        border: Border.all(color: appColors.white, width: 0.5),
         gradient: const LinearGradient(
           begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
+          end: Alignment.center,
           stops: [-2, 1],
           colors: [
             Color(0xffA903D2),
@@ -151,8 +170,8 @@ class _WalletState extends State<Wallet> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 10),
           Text(
             "Main balance",
             style: theme.textTheme.labelMedium?.copyWith(
@@ -161,60 +180,17 @@ class _WalletState extends State<Wallet> {
               fontSize: height / 30,
             ),
           ),
-          Text(
-            "₹0.00",
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: appColors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: height / 10,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _balanceColumn(Icons.file_upload_outlined, "Top up"),
-              Container(
-                height: height / 20,
-                color: appColors.white,
-                width: 1,
-              ),
-              _balanceColumn(Icons.file_download_outlined, "Withdraw"),
-              Container(
-                height: height / 20,
-                color: appColors.white,
-                width: 1,
-              ),
-              _balanceColumn(Icons.transfer_within_a_station, "Transfer"),
-            ],
-          ),
-          const SizedBox(height: 10),
-        ],
-      ),
-    );
-  }
-
-  Widget _balanceColumn(IconData icon, String label) {
-    return InkWell(
-      onTap: () {
-        Get.to(() => const AddMoney());
-      },
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: appColors.white,
-            size: height / 20,
-          ),
-          SizedBox(height: height / 40),
-          Text(
-            label,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: appColors.white,
-              fontWeight: FontWeight.w300,
-              fontSize: height / 32,
-            ),
-          ),
+          widget.controller.dashboardLoading.value
+              ? Lottie.asset('assets/lottie/wave_loading.json',
+                  width: width / 2, height: height / 6.5)
+              : Text(
+                  "₹${widget.controller.walletAmount.value}",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: height / 12,
+                  ),
+                ),
         ],
       ),
     );
@@ -222,53 +198,76 @@ class _WalletState extends State<Wallet> {
 
   Widget _buildTransactionsSection() {
     return Container(
-      margin: EdgeInsets.all(height / 30),
+      margin: EdgeInsets.symmetric(horizontal: height / 20),
       padding: EdgeInsets.all(height / 30),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: height / 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Latest Transactions",
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: height / 24,
+                  color: appColors.textLight,
+                  fontWeight: FontWeight.w700,
+                  fontSize: height / 28,
                 ),
               ),
-              Text(
-                "View all",
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: appColors.black.withOpacity(0.4),
-                  fontWeight: FontWeight.w400,
-                  fontSize: height / 30,
+              InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.walletHistory);
+                },
+                child: Text(
+                  "View all",
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: appColors.black.withValues(alpha: 0.4),
+                    fontWeight: FontWeight.w400,
+                    fontSize: height / 30,
+                  ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: height / 20),
-          _transactionItem(
-              "Walmart", "Today 12:32", -35.23, Icons.store, Colors.blue),
-          _transactionItem(
-              "Top up", "Yesterday 02:12", 430.00, Icons.upload, Colors.purple),
-          _transactionItem(
-              "Netflix", "Dec 24 13:53", -13.00, Icons.movie, Colors.red),
+          SizedBox(height: height / 30),
+          ListView.builder(
+            itemCount: widget.controller.walletHistoryRes?['data'].length > 4
+                ? 4
+                : widget.controller.walletHistoryRes?['data'].length,
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, ind) => Column(
+              children: [
+                _transactionItem(
+                    "${widget.controller.walletHistoryRes?['data'][ind]['text']}",
+                    formatTransactionDate(widget
+                        .controller.walletHistoryRes?['data'][ind]['datetime']),
+                    double.parse(widget.controller.walletHistoryRes?['data']
+                        [ind]['balance_amt']),
+                    Icons.wallet_outlined,
+                    appColors.primaryColor,
+                    widget.controller.walletHistoryRes?['data'][ind]['type']),
+                Divider(
+                  color: appColors.primaryColor.withValues(alpha: 0.25),
+                  thickness: 0.25,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _transactionItem(String title, String date, double amount,
-      IconData icon, Color iconColor) {
+  Widget _transactionItem(
+    String title,
+    String date,
+    double amount,
+    IconData icon,
+    Color iconColor,
+    String debitCredit,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -277,7 +276,7 @@ class _WalletState extends State<Wallet> {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: iconColor.withOpacity(0.1),
+                backgroundColor: iconColor.withValues(alpha: 0.1),
                 child: Icon(icon, color: iconColor),
               ),
               SizedBox(width: height / 30),
@@ -286,17 +285,16 @@ class _WalletState extends State<Wallet> {
                 children: [
                   Text(
                     title,
-                    
                     style: theme.textTheme.labelMedium?.copyWith(
-                      color: appColors.black.withOpacity(0.8),
+                      color: appColors.textLight.withValues(alpha: 0.9),
                       fontWeight: FontWeight.bold,
-                      fontSize: height / 28,
+                      fontSize: height / 30,
                     ),
                   ),
                   Text(
                     date,
                     style: theme.textTheme.labelMedium?.copyWith(
-                      color: appColors.black.withOpacity(0.4),
+                      color: appColors.black.withValues(alpha: 0.4),
                       fontWeight: FontWeight.w400,
                       fontSize: height / 32,
                     ),
@@ -308,9 +306,9 @@ class _WalletState extends State<Wallet> {
           Row(
             children: [
               Text(
-                "${amount > 0 ? '+' : ''}\$${amount.toStringAsFixed(2)}",
+                "${debitCredit == 'Debit' ? '-' : "+"}₹${amount.toStringAsFixed(2)}",
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: amount > 0 ? appColors.green : Colors.red,
+                  color: debitCredit == 'Debit' ? Colors.red : appColors.green,
                   fontWeight: FontWeight.w700,
                   fontSize: height / 28,
                 ),

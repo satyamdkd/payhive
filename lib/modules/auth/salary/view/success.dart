@@ -64,7 +64,7 @@ class _SuccessState extends State<Success> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(left: width / 16, right: width / 16),
                   child: Text(
-                    "Congratulation your KYC\nProcessed is completed ",
+                    "Thank you for registration, Upon verification account will be activated, within 4 hours",
                     style: theme.textTheme.labelMedium?.copyWith(
                       color: appColors.primaryColor,
                       fontWeight: FontWeight.w300,

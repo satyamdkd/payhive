@@ -1,15 +1,13 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payhive/modules/auth/camera/face_detector_view.dart';
-import 'package:payhive/modules/auth/salary/view/annual_income.dart';
 import 'package:payhive/routes/pages.dart';
 import 'package:payhive/services/di/di.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -37,8 +35,18 @@ class _SplashState extends State<Splash> {
         }
       } else {
         if (await sharedPref.getTempMobile() == null) {
-          Get.to(()=>SalariedAnnualIncome());
-         /// Get.offAllNamed(Routes.salaryReg);
+          PermissionStatus permission = await Permission.phone.request();
+
+          salariedController.isPhonePermissionGranted.value =
+              permission.isGranted;
+
+          if (salariedController.isPhonePermissionGranted.value == false) {
+            salariedController.isIgnoringMobile.value = true;
+          }
+
+          salariedController.update();
+
+          Get.offAllNamed(Routes.salaryReg);
         }
       }
     });

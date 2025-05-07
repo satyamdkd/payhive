@@ -86,7 +86,6 @@ class SharedPref {
     final SharedPreferences prefs = await sharedPref;
     await prefs.remove(userIdKey);
     await prefs.remove(tokenKey);
-    await prefs.remove(tempMobileKey);
     await prefs.remove(userTypeKey);
   }
 

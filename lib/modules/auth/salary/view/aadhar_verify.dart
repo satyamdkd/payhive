@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
+import 'package:payhive/modules/auth/camera/face_detector_view.dart';
 import 'package:payhive/modules/auth/salary/controller/salaried_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:payhive/modules/auth/salary/view/digilocker_aadhar.dart';
+import 'package:payhive/modules/auth/salary/view/pan_verify_salary.dart';
 import 'package:payhive/utils/helper/form_validation.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/theme/apptheme.dart';
 import 'package:payhive/utils/widgets/button.dart';
+import 'package:payhive/utils/widgets/snackbar.dart';
 import 'package:payhive/utils/widgets/textfield.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pinput/pinput.dart';
@@ -20,7 +24,9 @@ class AadharVerifySalaried extends GetView<SalariedController> {
         color: const Color.fromRGBO(30, 60, 87, 1),
         fontWeight: FontWeight.w600),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+      border: Border.all(
+        color: const Color.fromRGBO(234, 239, 243, 1),
+      ),
       borderRadius: BorderRadius.circular(8),
     ),
   );
@@ -51,7 +57,105 @@ class AadharVerifySalaried extends GetView<SalariedController> {
           child: Column(
             children: [
               progress(),
-              spacing(passedHeight: height / 7),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(left: width / 20, top: width / 20),
+                    child: Container(
+                      height: height / 12,
+                      width: height / 4,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(width / 100),
+                        border: Border.all(
+                          color: appColors.white,
+                          width: 0.4,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Get.offAll(const PanVerifySalary(),
+                              transition: Transition.leftToRight,
+                              duration: const Duration(milliseconds: 500));
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios_rounded,
+                              size: height / 25,
+                              color: appColors.white,
+                            ),
+                            Text(
+                              " Back ",
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: appColors.white,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (controller.isAadharScreenDisabled.value)
+                    Container(
+                      alignment: Alignment.centerRight,
+                      margin:
+                          EdgeInsets.only(right: width / 20, top: width / 20),
+                      child: Container(
+                        height: height / 12,
+                        width: height / 4,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(width / 100),
+                          border: Border.all(
+                            color: appColors.white,
+                            width: 0.4,
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            if (controller.compareWhetherAadharIsSame()) {
+                              controller.isAadharScreenDisabled.value = true;
+                              controller.update();
+                              Get.offAll(const FaceDetectorView(),
+                                  transition: Transition.rightToLeft,
+                                  duration: const Duration(milliseconds: 500));
+                            } else {
+                              showSnackBar(
+                                message:
+                                    'The Aadhaar number you entered does not match the fetched Aadhaar details.',
+                                title: 'Aadhar verification',
+                                color: appColors.red,
+                                duration: const Duration(seconds: 5),
+                              );
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                " Next ",
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: appColors.white,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: height / 25,
+                                color: appColors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
               text(),
               spacer(),
               aadhar(context)
@@ -70,6 +174,10 @@ class AadharVerifySalaried extends GetView<SalariedController> {
       width: width,
       decoration: BoxDecoration(
         color: appColors.white,
+        image: const DecorationImage(
+          image: AssetImage("assets/images/bg_drop_down.png"),
+          fit: BoxFit.cover,
+        ),
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(height / 16),
           topLeft: Radius.circular(height / 16),
@@ -87,116 +195,38 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                   customTextField(
                     textEditingController: controller.aadharController,
                     title: "",
+                    readOnly: controller.aadharDetails != null ? true : false,
+                    keyboardType: TextInputType.number,
+                    maxLength: 12,
+                    fullTag: "Please enter aadhar number",
                     validator: (value) => FormValidation.aadharValidator(
                       controller.aadharController.text,
                     ),
-                    fullTag: "Please enter aadhar number",
-                    keyboardType: TextInputType.number,
-                    suffixIcon: controller.isOTPShotAadhar.value
+                    suffixIcon: controller.aadharDetails != null
                         ? Container(
                             padding: EdgeInsets.symmetric(
                               vertical: height / 30,
                               horizontal: width / 30,
                             ),
-                            child: customButton(
-                              passedHeight: height / 14,
-                              passedWidth: width / 5.8,
-                              title: "Change",
-                              context: context,
-                              onTap: () {},
+                            child: Image.asset(
+                              "assets/icons/successmark.png",
+                              height: height / 50,
                             ),
                           )
                         : null,
                   ),
-                  spacing(passedHeight: height / 80),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: width / 80),
-                    child: Text(
-                      "OTP will be sent to your Aadhaar-linked mobile",
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: appColors.textDark,
-                        fontSize: height / 36,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  spacing(passedHeight: height / 20),
-                  SizedBox(height: height / 100),
-                  if (controller.isOTPShotAadhar.value)
-                    Column(
-                      children: [
-                        spacing(passedHeight: height / 80),
-                        Center(
-                          child: Pinput(
-                            controller: controller.aadharOTP,
-                            defaultPinTheme: PinTheme(
-                              width: height / 7.5,
-                              height: height / 7.5,
-                              textStyle: TextStyle(
-                                  fontSize: height / 16,
-                                  color: const Color.fromRGBO(30, 60, 87, 1),
-                                  fontWeight: FontWeight.w600),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey.shade300, width: 1.0),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            length: 6,
-                            focusedPinTheme: defaultPinTheme.copyDecorationWith(
-                              border: Border.all(
-                                color: appColors.primaryColor,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            submittedPinTheme: defaultPinTheme.copyWith(
-                              decoration: defaultPinTheme.decoration?.copyWith(
-                                color: const Color.fromRGBO(234, 239, 243, 1),
-                              ),
-                            ),
-                            pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
-                            showCursor: true,
-                            onChanged: (pin) {},
-                            onCompleted: (pin) {},
-                          ),
-                        ),
-
-                        spacing(passedHeight: height / 40),
-
-                        /// Text(
-                        ///   "00:53",
-                        ///   style: theme.textTheme.labelLarge?.copyWith(
-                        ///     color: appColors.textLight,
-                        ///     fontWeight: FontWeight.w400,
-                        ///     fontSize: height / 20,
-                        ///   ),
-                        /// ),
-
-                        spacing(passedHeight: height / 60),
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            "Resend code",
-                            style: theme.textTheme.labelLarge?.copyWith(
-                                color: appColors.textLight,
-                                fontWeight: FontWeight.w300,
-                                fontSize: height / 32,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
-                      ],
-                    ),
-                  spacer(),
-                  customButton(
-                      title: "Continue",
-                      context: context,
-                      onTap: () {
-                        controller.validateAadharForm();
-                      }),
-                  spacing(passedHeight: height / 8),
+                  if (controller.aadharDetails == null) spacer(),
+                  if (controller.aadharDetails == null)
+                    customButton(
+                        title: "Continue",
+                        context: context,
+                        onTap: () {
+                          controller.validateAadharForm();
+                        }),
+                  if (controller.aadharDetails == null) spacing(),
+                  if (controller.aadharDetails != null)
+                    spacing(passedHeight: height / 80),
+                  if (controller.aadharDetails != null) aadharDetails(context),
                 ],
               ),
             ),
@@ -233,27 +263,20 @@ class AadharVerifySalaried extends GetView<SalariedController> {
     );
   }
 
-  Container aadharDetails(BuildContext context) {
-    return Container(
-      height: MediaQuery.sizeOf(context).height / 1.35,
+  SizedBox aadharDetails(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height / 1.6,
       width: width,
-      decoration: BoxDecoration(
-        color: appColors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(height / 16),
-          topLeft: Radius.circular(height / 16),
-        ),
-      ),
       child: Stack(
         children: [
           Padding(
             padding: EdgeInsets.only(left: width / 20, right: width / 20),
             child: Column(
               children: [
-                spacing(passedHeight: height / 9),
+                spacing(passedHeight: height / 20),
                 Image.asset(
                   "assets/icons/successmark.png",
-                  height: height / 8,
+                  height: height / 10,
                 ),
                 spacing(passedHeight: height / 90),
                 Text(
@@ -265,13 +288,21 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                   ),
                 ),
                 spacing(passedHeight: height / 20),
+                spacing(passedHeight: height / 20),
                 Padding(
                   padding: const EdgeInsets.only(left: 3.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      if (controller.aadharImageBytes != null)
+                        Image.memory(
+                          controller.aadharImageBytes!,
+                          fit: BoxFit.contain,
+                          height: height / 8,
+                        ),
+                      SizedBox(width: width / 30),
                       SizedBox(
-                        width: width / 2.4,
+                        width: width / 2,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,7 +319,7 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                               controller.aadharDetails!['name'] ?? '',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
-                                fontWeight: FontWeight.w300,
+                                fontWeight: FontWeight.w500,
                                 fontSize: height / 24,
                               ),
                             ),
@@ -305,7 +336,7 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: width / 2.4,
+                        width: width / 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,10 +350,12 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                               ),
                             ),
                             Text(
-                              controller.aadharDetails!['gender'] ?? '',
+                              controller.aadharDetails!['gender'] == 'M'
+                                  ? 'Male'
+                                  : 'Female',
                               style: theme.textTheme.headlineSmall?.copyWith(
                                 color: appColors.black.withOpacity(0.8),
-                                fontWeight: FontWeight.w300,
+                                fontWeight: FontWeight.w500,
                                 fontSize: height / 24,
                               ),
                             ),
@@ -330,7 +363,7 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                         ),
                       ),
                       SizedBox(
-                        width: width / 2.4,
+                        width: width / 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,7 +397,7 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: width / 1.2,
+                        width: width / 1.3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,20 +425,26 @@ class AadharVerifySalaried extends GetView<SalariedController> {
                   ),
                 ),
                 spacer(),
-                customButton(title: "Continue", context: context, onTap: () {}),
+                customButton(
+                    title: "Continue",
+                    context: context,
+                    onTap: () {
+                      if (controller.compareWhetherAadharIsSame()) {
+                        controller.isAadharScreenDisabled.value = true;
+                        controller.update();
+                        Get.to(() => const FaceDetectorView());
+                      } else {
+                        showSnackBar(
+                          message:
+                              'The Aadhaar number you entered does not match the fetched Aadhaar details.',
+                          title: 'Aadhar verification',
+                          color: appColors.red,
+                          duration: const Duration(seconds: 5),
+                        );
+                      }
+                    }),
                 spacing(passedHeight: height / 8),
               ],
-            ),
-          ),
-          Positioned(
-            bottom: -height / 8,
-            child: IgnorePointer(
-              ignoring: true,
-              child: Image.asset(
-                "assets/images/home_flare.png",
-                width: width,
-                height: height / 1.75,
-              ),
             ),
           ),
         ],
@@ -423,7 +462,7 @@ class AadharVerifySalaried extends GetView<SalariedController> {
       animationDuration: 2000,
       padding: EdgeInsets.zero,
       lineHeight: height / 100,
-      percent: 0.5,
+      percent: 0.8,
       backgroundColor: appColors.primaryExtraLight,
       progressColor: appColors.green,
     );

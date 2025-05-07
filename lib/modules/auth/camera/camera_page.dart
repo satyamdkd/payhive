@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:payhive/modules/auth/camera/faces.dart';
 import 'package:payhive/modules/auth/camera/verify_&_submit.dart';
+import 'package:payhive/modules/auth/salary/view/aadhar_verify.dart';
 import 'package:payhive/utils/screen_size.dart';
 import 'package:payhive/utils/widgets/snackbar.dart';
 import '../../../utils/theme/apptheme.dart';
@@ -85,22 +86,29 @@ class _CameraPageState extends State<CameraPage> {
                   child: Row(
                     children: [
                       SizedBox(width: width / 40),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: appColors.primaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            width: 1,
+                      GestureDetector(
+                        onTap: () {
+                          Get.offAll(AadharVerifySalaried(),
+                              transition: Transition.rightToLeft,
+                              duration: const Duration(milliseconds: 500));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: appColors.primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              width: 1,
+                              color: appColors.bottomNavLightColor,
+                            ),
+                          ),
+                          height: height / 10,
+                          width: height / 10,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.clear_rounded,
+                            size: height / 14,
                             color: appColors.bottomNavLightColor,
                           ),
-                        ),
-                        height: height / 10,
-                        width: height / 10,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.clear_rounded,
-                          size: height / 14,
-                          color: appColors.bottomNavLightColor,
                         ),
                       ),
                       SizedBox(width: width / 20),
@@ -126,9 +134,9 @@ class _CameraPageState extends State<CameraPage> {
                   ),
                 ),
                 Positioned(
-                  bottom: height / 10,
+                  bottom: height / 40,
                   child: Text(
-                    "\nPlease align your face to the center for accurate\nface verification.",
+                    "Ensure proper lighting for smooth KYC processing.\nIf you are wearing glasses, a cap, or anything that\nhides your full face, please remove it before\ntaking a selfie.",
                     textAlign: TextAlign.center,
                     style: theme.textTheme.labelLarge?.copyWith(
                       color: appColors.white,
@@ -262,9 +270,22 @@ class _CameraPageState extends State<CameraPage> {
   };
 
   Future<void> takePicture() async {
+    if (facesDetected.length > 1) {
+      showSnackBar(
+        message:
+            "There are too many people in the frame. Please take a selfie of yourself only.",
+        title: "Face Verification",
+        duration: const Duration(seconds: 4),
+      );
+      return;
+    }
+
     if (facesDetected.isEmpty) {
       showSnackBar(
-          message: "No face detected! Try again.", title: "Face Verification");
+        message: "No face detected! Try again.",
+        title: "Face Verification",
+        duration: const Duration(seconds: 2),
+      );
       return;
     }
 
@@ -273,7 +294,6 @@ class _CameraPageState extends State<CameraPage> {
     try {
       final XFile file = await _controller!.takePicture();
       if (mounted) {
-
         Get.off(() => VerifyAndSubmit(imagePath: file.path));
       }
     } catch (e) {

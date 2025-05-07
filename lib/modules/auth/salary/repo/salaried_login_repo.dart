@@ -12,26 +12,36 @@ class SalariedLoginRepo {
     required String step,
     required File? profile,
     required String? mobile,
+    required String? appSignature,
     required String? otp,
     required String? email,
     required String? emailotp,
     required String? accountType,
+    required String? aadhar,
     required String? gstpan,
     required String? turnover,
-    required String? aadhar,
+    required String? businessType,
+    required String? formOfBusiness,
+    required String? aadharstep,
+    required String? requestId,
     required String? fcmToken,
   }) async {
     FormData formData = FormData.fromMap(
       {
         "step": step,
         'mobile': mobile,
+        'signature' : appSignature,
         'otp': otp,
         'email': email,
         'emailotp': emailotp,
         'account_type': accountType,
+        'aadhar': aadhar,
+        'form_bussiness': formOfBusiness,
+        'bussiness_type': businessType,
         'gstpan': gstpan,
         'turnover': turnover,
-        'aadhar': aadhar,
+        'aadharstep': aadharstep,
+        'requestId': requestId,
         "profile": profile != null && profile.path != ''
             ? await MultipartFile.fromFile(
                 profile.path,
@@ -55,10 +65,10 @@ class SalariedLoginRepo {
     );
   }
 
-  Future<ApiResults> getAnnualIncome() async {
+  Future<ApiResults> getAnnualIncome(String type) async {
     return await network.getData(
       endPoint: URLs.getUserDropDown,
-      queryParameters: {'type': 'salaried'},
+      queryParameters: {'type': type},
     );
   }
 }

@@ -13,9 +13,11 @@ setUpDi() async {
 final sharedPref = locator.get<SharedPref>();
 final salariedController = locator.get<SalariedController>();
 
+String userName = '';
+String phoneNumber = '';
+String userEmail = '';
 String token = '';
 String fcmToken = '';
-int tempIosCheckForMakingItLiveGlobal = 1;
-String myName = '';
-String factoryAddress = '';
+String marginPerTransaction = '15.0';
+
 bool forIOS = false;

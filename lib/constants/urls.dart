@@ -1,6 +1,29 @@
 class URLs {
   static String baseURl = "https://paylix.in/api/auth";
+  static String googleAPIKEY = "AIzaSyBV93sZuyUT9XwKbnVKWByrHE0V5VsYCg0";
+  static String axisKeyTest = "rzp_test_dIjJdB2wlMpYPj";
+  static String razorPayKeyTest = "rzp_test_IlEozMRLgfVCGp";
+  static String razorPayKeyLive = "rzp_live_hlifXpcyda4tLf";
+  static const String token = "/refresh";
   static const String loginOrRegister = "/registerlogin";
   static const String getUserData = "/getuserdata";
+  static const String getDashboardData = "/dashboard";
   static const String getUserDropDown = "/setaccountfor";
+  static const String addBank = "/add-bank";
+  static const String addAddress = "/addupdate-address";
+  static const String deleteAddress = "/delete-address";
+  static const String defaultAddress = "/set-default-address";
+  static const String getCardType = "/get-cardtype";
+  static const String getAllCards = "/get-card";
+  static const String posRequest = "/pos-request";
+  static const String addBeneficiary = "/add-beneficiary";
+  static const String walletPayout = "/wallet-payout";
+  static const String getPosBankList = "/getposbank";
+  static const String getBeneficiaryBankList = "/getbeneficiarylist";
+  static const String deleteBeneficiary = "/delete-beneficiary";
+  static const String serialNumberList = "/getuserserial";
+  static const String getPosRequestList = "/getposrequestlist";
+  static const String walletHistory = "/wallet-history";
+  static const String generateOrderId = "/order-generate";
+  static const String sendPaymentDetailToServer = "/order-payment";
 }

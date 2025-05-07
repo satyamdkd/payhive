@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:payhive/constants/string_constants.dart';
-import 'package:payhive/modules/splash/view/splash.dart';
 import 'package:payhive/routes/pages.dart';
 import 'package:payhive/utils/helper/hide_status_bar.dart';
 import 'package:payhive/utils/helper/key_board_utils.dart';
@@ -30,7 +29,6 @@ class _PayHiveState extends State<PayHive> {
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
         child: GetMaterialApp(
-
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.light,
           theme: theme,
