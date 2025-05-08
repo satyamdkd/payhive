@@ -240,14 +240,15 @@ class _WalletState extends State<Wallet> {
             itemBuilder: (context, ind) => Column(
               children: [
                 _transactionItem(
-                    "${widget.controller.walletHistoryRes?['data'][ind]['text']}",
-                    formatTransactionDate(widget
-                        .controller.walletHistoryRes?['data'][ind]['datetime']),
-                    double.parse(widget.controller.walletHistoryRes?['data']
-                        [ind]['balance_amt']),
-                    Icons.wallet_outlined,
-                    appColors.primaryColor,
-                    widget.controller.walletHistoryRes?['data'][ind]['type']),
+                  "${widget.controller.walletHistoryRes?['data'][ind]['text']}",
+                  formatTransactionDate(widget
+                      .controller.walletHistoryRes?['data'][ind]['datetime']),
+                  double.parse(widget.controller.walletHistoryRes?['data'][ind]
+                      ['balance_amt']),
+                  Icons.wallet_outlined,
+                  appColors.primaryColor,
+                  widget.controller.walletHistoryRes?['data'][ind]['type'],
+                ),
                 Divider(
                   color: appColors.primaryColor.withValues(alpha: 0.25),
                   thickness: 0.25,
